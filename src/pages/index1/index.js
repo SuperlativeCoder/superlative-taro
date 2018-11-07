@@ -22,13 +22,6 @@ import './index.scss'
   }
 }))
 class Index extends Component {
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      isNavigateBarShow: false
-    }
-  }
 
   config = {
     navigationBarTitleText: '首页1111',
@@ -51,27 +44,13 @@ class Index extends Component {
 
   componentDidHide () { }
 
-  toIndex1() {
-    wx.navigateTo({
-      url: '/pages/index1/index'
-    })
-  }
-
-  toggleNavigateShow() {
-    this.setState({
-      isNavigateBarShow: !this.state.isNavigateBarShow
-    })
-  }
-
   render () {
     return (
       <View className='index'>
-        <NavigationBar isNavigateBarShow={isNavigateBarShow} />
+        <NavigationBar />
         <Button className='add_btn' onClick={this.props.add}>+</Button>
         <Button className='dec_btn' onClick={this.props.dec}>-</Button>
         <Button className='dec_btn' onClick={this.props.asyncAdd}>async</Button>
-        <Button className='dec_btn' onClick={this.toIndex1}>to index1</Button>
-        <Button onClick={this.toggleNavigateShow.bind(this)}>toggle navigate show</Button>
         <View><Text>{this.props.counter.num}</Text></View>
         <View><Text>Hello, World</Text></View>
       </View>

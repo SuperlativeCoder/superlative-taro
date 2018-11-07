@@ -8,6 +8,7 @@
     left: 0;
     width: 100%;
     min-height: 64px;
+    transition: all .3s;
     .navigation-left {
       flex: 0 0 160rpx;
       display: flex;
@@ -33,5 +34,8 @@
     .navigation-right {
       flex: 0 0 160rpx;
     }
+  }
+  .holder-bar {
+    transition: all .3s;
   }
 }
