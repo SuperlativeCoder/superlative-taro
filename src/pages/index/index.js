@@ -26,7 +26,7 @@ class Index extends Component {
     super(props)
 
     this.state = {
-      isNavigateBarShow: false
+      isNavigateBarHidden: false,
     }
   }
 
@@ -59,14 +59,14 @@ class Index extends Component {
 
   toggleNavigateShow() {
     this.setState({
-      isNavigateBarShow: !this.state.isNavigateBarShow
+      isNavigateBarHidden: !this.state.isNavigateBarHidden
     })
   }
 
   render () {
     return (
       <View className='index'>
-        <NavigationBar isNavigateBarShow={isNavigateBarShow} />
+        <NavigationBar isNavigateBarShow={isNavigateBarHidden}/>
         <Button className='add_btn' onClick={this.props.add}>+</Button>
         <Button className='dec_btn' onClick={this.props.dec}>-</Button>
         <Button className='dec_btn' onClick={this.props.asyncAdd}>async</Button>

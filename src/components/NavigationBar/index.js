@@ -2,7 +2,7 @@ import Taro, { Component } from '@tarojs/taro';
 import { View, Button, Text } from '@tarojs/components';
 import PropTypes from 'prop-types';
 
-import { isIOS, statusBarHeight } from '../../utils/platform';
+import { isIOS, STATUSBAR_HEIGHT } from '../../utils/platform';
 import './index.scss';
 
 const ANDROID_NAVHAR_HEIGHT = 48;
@@ -12,12 +12,15 @@ const ICON_BACK = require('../../public/images/icon-back.svg');
 const propTypes = {
   isHolderBarHidden: PropTypes.bool,
   isNavigateBarShow: PropTypes.bool,
+  isNavigateBarHidden: PropTypes.bool,
+  navigationBarTitle: PropTypes.string,
 };
 
 const defaultPropTypes = {
   isHolderBarHidden: false,
   isNavigateBarShow: true,
-}
+  navigationBarTitle: '',
+};
 
 class NavigationBar extends Component {
 
@@ -27,20 +30,26 @@ class NavigationBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      height: isIOS ? IOS_NAVBAR_HEIGHT : ANDROID_NAVHAR_HEIGHT,
-      paddingTop: statusBarHeight,
+      isBackButtonShow: false,
       showHomeButton: false,
-      // isNavigateBarShow: true,
       fontWeight: isIOS ? 'bold' : 'normal',
     };
   }
 
   componentWillMount() {
-    console.log(arguments, wx, '11111111')
     const pages = getCurrentPages();
-    if (pages.length < 2 && pages[0].route !== __wxConfig.pages[0]) {
+    if (pages.length === 1 && pages[0].route !== __wxConfig.pages[0]) {
       this.setState({
         showHomeButton: true,
+        isBackButtonShow: true,
+      });
+    } else if (pages.length > 1) {
+      this.setState({
+        isBackButtonShow: true,
+      });
+    } else {
+      this.setState({
+        isBackButtonShow: false,
       });
     }
   }
@@ -80,35 +89,34 @@ class NavigationBar extends Component {
       url: `/${__wxConfig.pages[0]}`,
     });
   }
-  toggleNavigateShow() {
-    this.isNavigateBarShow = !this.isNavigateBarShow;
-  }
 
   render () {
-    const { height, paddingTop, showHomeButton, fontWeight } = this.state;
-    const { navigationBarTitle, isHolderBarHidden, isNavigateBarShow } = this.props;
-    console.log(isNavigateBarShow, 'isNavigateBarShow')
+    const NAVIGATIONBAR_HEIGHT = isIOS ? IOS_NAVBAR_HEIGHT : ANDROID_NAVHAR_HEIGHT;
+    const NAVIGATIONBAR_TOTAL_HEIGHT = NAVIGATIONBAR_HEIGHT + STATUSBAR_HEIGHT;
+    const { showHomeButton, fontWeight, isBackButtonShow } = this.state;
+    const { navigationBarTitle = '', isHolderBarHidden, isNavigateBarHidden } = this.props;
+    console.log(navigationBarTitle, 'navigationBarTitle')
     return (
       <View className="navigation-bar-wrapper">
-        <View className="fixed-bar" style={{height: `${height}px`, paddingTop: `${paddingTop}px`, transform:`translateY(${isNavigateBarShow?'0px':-(height + paddingTop)}px)`}}>
-          <View className="navigation-left" onClick={this.navigateBack}>
-            <View className="back-icon">
+        <View className="fixed-bar" style={{height: `${NAVIGATIONBAR_HEIGHT}px`, paddingTop: `${STATUSBAR_HEIGHT}px`, transform:`translateY(-${!isNavigateBarHidden?0:NAVIGATIONBAR_TOTAL_HEIGHT}px)`}}>
+          <View className="navigation-left">
+            { isBackButtonShow && <View className="back-icon" onClick={this.navigateBack}>
               <Image className="back-image" src={ICON_BACK}></Image>
-            </View>
-            { showHomeButton && <View className="back-text">首页</View>}
+            </View>}
+            { showHomeButton && <View className="back-text" style={{fontWeight}}>首页</View>}
           </View>
-          <View className="navigation-title">主页</View>
-          <View className="navigation-right"></View>
+          <View className="navigation-title">{navigationBarTitle}</View>
+          <View className="navigation-right" />
         </View>
         {
-          !isHolderBarHidden && <View className="holder-bar" style={{height: `${isNavigateBarShow ? (height + paddingTop) : 0}px`}} />
+          !isHolderBarHidden && <View className="holder-bar" style={{height: `${!isNavigateBarHidden ? NAVIGATIONBAR_TOTAL_HEIGHT : 0}px`}} />
         }
       </View>
-    )
+    );
   }
 }
 
 NavigationBar.propTypes = propTypes;
 NavigationBar.defaultPropTypes = defaultPropTypes;
 
-export default NavigationBar
+export default NavigationBar;
