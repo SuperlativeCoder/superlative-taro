@@ -1,6 +1,6 @@
 
 {
-  "extends": ["taro"],
+  "extends": ["taro", "airbnb"],
   "parser": "babel-eslint",
   "plugins": [
       "react",

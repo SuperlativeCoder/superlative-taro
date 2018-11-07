@@ -1,47 +1,28 @@
-import Taro, { Component } from '@tarojs/taro'
-import { View, Button, Text } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
+import Taro, { Component } from '@tarojs/taro';
+import { View, Button, Text } from '@tarojs/components';
 
-import { add, minus, asyncAdd } from '../../actions/counter'
-import { isIOS, statusBarHeight } from '../../utils/platform.js';
+import { isIOS, statusBarHeight } from '../../utils/platform';
+import './index.scss';
 
 const ANDROID_NAVHAR_HEIGHT = 48;
 const IOS_NAVBAR_HEIGHT = 44;
+const ICON_BACK = require('../../public/images/icon-back.svg');
 
-import './index.scss'
 
-
-@connect(({ counter }) => ({
-  counter
-}), (dispatch) => ({
-  add () {
-    dispatch(add())
-  },
-  dec () {
-    dispatch(minus())
-  },
-  asyncAdd () {
-    dispatch(asyncAdd())
-  }
-}))
 class NavigationBar extends Component {
 
   config = {
   }
 
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       height: isIOS ? IOS_NAVBAR_HEIGHT : ANDROID_NAVHAR_HEIGHT,
       paddingTop: statusBarHeight,
       showHomeButton: false,
       isNavigateBarShow: true,
       fontWeight: isIOS ? 'bold' : 'normal',
-    }
-  }
-
-  componentWillReceiveProps (nextProps) {
-    console.log(this.props, nextProps)
+    };
   }
 
   componentWillMount() {
@@ -49,18 +30,11 @@ class NavigationBar extends Component {
     const pages = getCurrentPages();
     if (pages.length < 2 && pages[0].route !== __wxConfig.pages[0]) {
       this.setState({
-        showHomeButton: true
-      })
+        showHomeButton: true,
+      });
     }
   }
-
-  componentWillUnmount () { }
-
-  componentDidShow () { 
-    console.log(arguments, wx)
-  }
-
-  componentDidHide () { }
+  
   handleNavigate(invokeParam) {
     const that = this;
     const param = this.navigateParam ? this.navigateParam : invokeParam;
@@ -102,13 +76,20 @@ class NavigationBar extends Component {
 
   render () {
     const { height, paddingTop, showHomeButton, isNavigateBarShow, fontWeight } = this.state;
+    const { navigationBarTitle } = this.props;
     return (
-      <View className='navigation-bar'>
-        <View style={{height: `${height}px`, paddingTop: `${paddingTop}px`, background: '#ccc'}}>
-          {
-            showHomeButton ? '1111111': '1122222'
-          }
+      <View className="navigation-bar-wrapper">
+        <View className="fixed-bar" style={{height: `${height}px`, paddingTop: `${paddingTop}px`, background: '#ccc'}}>
+          <View className="navigation-left">
+            <View className="back-icon">
+              <Image className="back-image" src={ICON_BACK}></Image>
+            </View>
+            <View className="back-text">首页</View>
+          </View>
+          <View className="navigation-title">主页</View>
+          <View className="navigation-right"></View>
         </View>
+        <View className="holder-bar" style={{height: `${height + paddingTop}px`}} />
       </View>
     )
   }

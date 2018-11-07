@@ -1,0 +1,37 @@
+.navigation-bar-wrapper {
+  .fixed-bar {
+    position: fixed;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-height: 64px;
+    .navigation-left {
+      flex: 0 0 160rpx;
+      display: flex;
+      .back-icon {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        .back-image {
+          width: 40rpx;
+          height: 40rpx;
+          padding-left: 20rpx;
+        }
+      }
+      .back-text {
+        font-size: 36rpx;
+        color: #454545;
+      }
+    }
+    .navigation-title {
+      flex: 1;
+      text-align: center;
+    }
+    .navigation-right {
+      flex: 0 0 160rpx;
+    }
+  }
+}
