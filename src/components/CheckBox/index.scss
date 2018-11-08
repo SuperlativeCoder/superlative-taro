@@ -1,0 +1,11 @@
+@import '../../public/styles/index.scss';
+
+.tm-checkbox {
+  @include flex-center;
+  width: 48rpx;
+  height: 48rpx;
+  .image {
+    width: 40rpx;
+    height: 40rpx;
+  }
+}

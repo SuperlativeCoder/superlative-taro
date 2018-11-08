@@ -1,0 +1,50 @@
+@import '../../../../public/styles/index.scss';
+
+@mixin padding {
+  box-sizing: border-box;
+  padding-left: 40rpx;
+}
+
+.bill-month-list  {
+  @include padding;
+  display: flex;
+  height: 112rpx;
+  .checkbox {
+    display: flex;
+    align-items: center;
+    flex: 0 0 88rpx;
+    width: 88rpx;
+    .tm-checkbox {
+      @include flex-center;
+      width: 48rpx;
+      height: 48rpx;
+      image {
+        width: 40rpx;
+        height: 40rpx;
+      }
+    }
+  }
+  .content {
+    flex: 1;
+    // border-bottom: 1rpx solid $color-f4;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .month {
+      color: $color-f1;
+      font-size: 32rpx;
+      font-weight: bold;
+    }
+    .money {
+      padding-right: 32rpx;
+      .total {
+        color: $color-f2;
+        font-size: 32rpx;
+      }
+      .to-pay {
+        font-size: 24rpx;
+        color: $color-z4;
+      }
+    }
+  }
+}

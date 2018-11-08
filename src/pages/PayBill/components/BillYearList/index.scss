@@ -1,0 +1,17 @@
+@import '../../../../public/styles/index.scss';
+@mixin padding {
+  box-sizing: border-box;
+  padding-left: 40rpx;
+}
+
+.bill-year-list {
+  .title {
+    @include padding;
+    padding-right: 32rpx;
+    height: 72rpx;
+    line-height: 72rpx;
+    background-color: $color-f5;
+    font-size: 32rpx;
+    color: $color-f2;
+  }
+}
