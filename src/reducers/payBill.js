@@ -7,8 +7,9 @@ import {
 import { LOADING_STATUS } from '../constants/symbols';
 
 const INITIAL_STATE = {
-  num: 0,
-}
+  bigTest: null,
+  loadingStatus: LOADING_STATUS.DEFAULT,
+};
 
 export default function payBill(state = INITIAL_STATE, action = {}) {
   const { payload, type } = action;
@@ -24,6 +25,7 @@ export default function payBill(state = INITIAL_STATE, action = {}) {
     case success(GET_USER_BILL_DATA):
       return {
         ...state,
+        bigTest: payload.result.bigTest,
       };
     case failure(GET_USER_BILL_DATA):
       return {

@@ -4,8 +4,8 @@ import { connect } from '@tarojs/redux';
 import PropTypes from 'prop-types';
 
 import combineActions from '../../middlewares/combineActions';
-import { add, minus, asyncAdd } from '../../actions/counter';
-import { toggleCheckBoxShow, getUserBillData } from '../../actions/payBill';
+import * as counterActions from '../../actions/counter';
+import * as payBillActions from '../../actions/payBill';
 import NavigationBar from '../../components/NavigationBar';
 import HeaderTitle from '../../components/HeaderTitle';
 import BillYearList from './components/BillYearList';
@@ -32,34 +32,14 @@ const defaultProps = {
 };
 
 
-@connect(({ counter }) => ({
+@connect(({ counter, bigTest }) => ({
   counter,
+  bigTest,
 }), combineActions({
-  add,
-  minus,
-  asyncAdd,
-  toggleCheckBoxShow,
-  getUserBillData,
+  ...counterActions,
+  ...payBillActions,
 }))
-// @connect(({ counter }) => ({
-//   counter,
-// }), dispatch => ({
-//   add() {
-//     dispatch(add());
-//   },
-//   dec() {
-//     dispatch(minus());
-//   },
-//   asyncAdd() {
-//     dispatch(asyncAdd());
-//   },
-//   toggleCheckBoxShow() {
-//     dispatch(toggleCheckBoxShow());
-//   },
-//   getUserBillDataAction() {
-//     dispatch(getUserBillData());
-//   },
-// }))
+
 class PayBill extends Component {
   constructor(props) {
     super(props);
@@ -117,6 +97,15 @@ class PayBill extends Component {
 
   render() {
     const { isNavigateBarHidden, bigTest } = this.state;
+    const {
+      add,
+      minus,
+      asyncAdd,
+      toggleCheckBoxShow,
+      getUserBillData,
+      counter,
+    } = this.props;
+    // console.log(bigTest, 'test');
 
     return (
       <View className="pay-bill">
@@ -136,14 +125,14 @@ class PayBill extends Component {
             bigTest.map(v => <BillYearList data={v} />)
           }
         </View>
-        <Button className="add_btn" onClick={this.props.add}>+</Button>
-        <Button className="dec_btn" onClick={this.props.minus}>-</Button>
-        <Button className="dec_btn" onClick={this.props.asyncAdd}>async</Button>
-        <Button className="dec_btn" onClick={this.props.toggleCheckBoxShow}>toggleCheckBoxShow</Button>
-        <Button className="dec_btn" onClick={this.props.getUserBillData}>getUserBillDataAction</Button>
+        <Button className="add_btn" onClick={add}>+</Button>
+        <Button className="dec_btn" onClick={minus}>-</Button>
+        <Button className="dec_btn" onClick={asyncAdd}>async</Button>
+        <Button className="dec_btn" onClick={toggleCheckBoxShow}>toggleCheckBoxShow</Button>
+        <Button className="dec_btn" onClick={getUserBillData}>getUserBillDataAction</Button>
         <Button className="dec_btn" onClick={this.toIndexOne}>to index1</Button>
         <Button onClick={this.toggleNavigateShow.bind(this)}>toggle navigate show</Button>
-        <View><Text>{this.props.counter.num}</Text></View>
+        <View><Text>{counter.num}</Text></View>
         <View><Text>Hello, World</Text></View>
       </View>
     );

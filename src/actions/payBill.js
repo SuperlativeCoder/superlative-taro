@@ -3,7 +3,6 @@ import {
   TOGGLE_CHECKBOX_SHOW,
   GET_USER_BILL_DATA,
 } from '../constants/payBill';
-console.log(GET_USER_BILL_DATA, 'GET_USER_BILL_DATA')
 import { MOCK_HOST } from '../constants/host';
 import { CALL_API } from '../constants/symbols';
 
