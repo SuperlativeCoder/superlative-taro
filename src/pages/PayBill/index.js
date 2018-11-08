@@ -20,6 +20,7 @@ const propTypes = {
   counter: PropTypes.shape({
     num: PropTypes.number,
   }),
+  bigTest: PropTypes.shape({}),
 };
 
 const defaultProps = {
@@ -29,12 +30,13 @@ const defaultProps = {
   getUserBillData: () => {},
   toggleCheckBoxShow: () => {},
   counter: {},
+  bigTest: {},
 };
 
 
-@connect(({ counter, bigTest }) => ({
+@connect(({ counter, payBill }) => ({
   counter,
-  bigTest,
+  payBill,
 }), combineActions({
   ...counterActions,
   ...payBillActions,
@@ -46,21 +48,6 @@ class PayBill extends Component {
 
     this.state = {
       isNavigateBarHidden: false,
-      bigTest: [{
-        testData: [{
-          isChecked: false,
-        }, {
-          isChecked: true,
-        }],
-        year: 2017,
-      }, {
-        testData: [{
-          isChecked: true,
-        }, {
-          isChecked: false,
-        }],
-        year: 2016,
-      }],
     };
   }
 
@@ -91,7 +78,7 @@ class PayBill extends Component {
   }
 
   render() {
-    const { isNavigateBarHidden, bigTest } = this.state;
+    const { isNavigateBarHidden } = this.state;
     const {
       add,
       minus,
@@ -99,8 +86,10 @@ class PayBill extends Component {
       toggleCheckBoxShow,
       getUserBillData,
       counter,
+      payBill,
     } = this.props;
-    // console.log(bigTest, 'test');
+    const { bigTest } = payBill;
+    console.log(bigTest, this.props, 'test');
 
     return (
       <View className="pay-bill">
@@ -117,7 +106,7 @@ class PayBill extends Component {
         </View>
         <View className="bill-wrapper">
           {
-            bigTest.map((v, i) => <BillYearList data={v} key={i} />)
+            bigTest.map((v, i) => <BillYearList data={v} key={i} toggleCheckBoxShow={toggleCheckBoxShow} currentParentIndex={i} />)
           }
         </View>
         <Button className="add_btn" onClick={add}>+</Button>

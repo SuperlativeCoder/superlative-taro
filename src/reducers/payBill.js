@@ -15,8 +15,14 @@ export default function payBill(state = INITIAL_STATE, action = {}) {
   const { payload, type } = action;
   switch (type) {
     case TOGGLE_CHECKBOX_SHOW:
+      console.log(payload, 'payload', state)
+      const bigTestRepeat = JSON.parse(JSON.stringify(state.bigTest));
+      // console.log(bigTestRepeat[0].testData[0].isChecked = true)
+      console.log(bigTestRepeat, 'bigTestRepeat')
+      bigTestRepeat[payload.currentParentIndex].testData[payload.currentIndex].isChecked = !payload.curChecked
       return {
         ...state,
+        bigTest: bigTestRepeat,
       };
     case request(GET_USER_BILL_DATA):
       return {

@@ -24,7 +24,7 @@ class App extends Component {
   config = {
     pages: [
       'pages/PayBill/index',
-      'pages/index1/index',
+      'pages/index/index',
     ],
     window: {
       backgroundTextStyle: 'light',
