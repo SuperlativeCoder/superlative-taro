@@ -21,7 +21,7 @@ class BillYearList extends Component {
       <View className="bill-year-list">
         <View className="title">{year}</View>
         {
-          testData.map((v, i) => <BillMonthList data={v} noUnderline={testData.length - 1 === i} />)
+          testData.map((v, i) => <BillMonthList data={v} key={i} noUnderline={testData.length - 1 === i} />)
         }
       </View>
     );

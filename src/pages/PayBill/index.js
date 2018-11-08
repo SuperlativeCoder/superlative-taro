@@ -65,7 +65,6 @@ class PayBill extends Component {
   }
 
   componentDidMount() {
-    console.log(111);
     const { getUserBillData } = this.props;
     getUserBillData();
   }
@@ -78,10 +77,6 @@ class PayBill extends Component {
 
   config = {
   }
-
-  // componentDidShow() { console.log(2); }
-
-  // componentDidHide() { }
 
   toIndexOne() {
     wx.navigateTo({
@@ -122,7 +117,7 @@ class PayBill extends Component {
         </View>
         <View className="bill-wrapper">
           {
-            bigTest.map(v => <BillYearList data={v} />)
+            bigTest.map((v, i) => <BillYearList data={v} key={i} />)
           }
         </View>
         <Button className="add_btn" onClick={add}>+</Button>

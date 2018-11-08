@@ -27,6 +27,7 @@
     "react/jsx-no-bind": 0,
     "no-unused-vars": ["error", { "varsIgnorePattern": "[tT]aro" }],
     "react/jsx-closing-tag-location": 0,
-    "react/prefer-stateless-function": 0
+    "react/prefer-stateless-function": 0,
+    "react/no-array-index-key": 0
   }
 }
