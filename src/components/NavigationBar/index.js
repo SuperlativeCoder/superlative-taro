@@ -27,7 +27,6 @@ class NavigationBar extends Component {
     this.state = {
       isBackButtonShow: false,
       showHomeButton: false,
-      fontWeight: isIOS ? 'bold' : 'normal',
     };
   }
 
@@ -88,9 +87,8 @@ class NavigationBar extends Component {
   render() {
     const NAVIGATIONBAR_HEIGHT = isIOS ? IOS_NAVBAR_HEIGHT : ANDROID_NAVHAR_HEIGHT;
     const NAVIGATIONBAR_TOTAL_HEIGHT = NAVIGATIONBAR_HEIGHT + STATUSBAR_HEIGHT;
-    const { showHomeButton, fontWeight, isBackButtonShow } = this.state;
+    const { showHomeButton, isBackButtonShow } = this.state;
     const { navigationBarTitle = '', isHolderBarHidden, isNavigateBarHidden } = this.props;
-    console.log(navigationBarTitle, 'navigationBarTitle');
 
     return (
       <View className="navigation-bar-wrapper">
@@ -108,9 +106,9 @@ class NavigationBar extends Component {
                 <Image className="back-image" src={ICON_BACK} />
               </View>
             }
-            { showHomeButton && <View className="back-text" style={{ fontWeight }}>首页</View>}
+            { showHomeButton && <View className="back-text">首页</View>}
           </View>
-          <View className="navigation-title">{navigationBarTitle}</View>
+          <View className="navigation-title" style={{ fontWeight: 'bold' }}>{navigationBarTitle}</View>
           <View className="navigation-right" />
         </View>
         {
