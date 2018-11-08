@@ -13,12 +13,14 @@ const propTypes = {
   isHolderBarHidden: PropTypes.bool,
   isNavigateBarHidden: PropTypes.bool,
   navigationBarTitle: PropTypes.string,
+  navigationBarBg: PropTypes.string,
 };
 
 const defaultProps = {
   isHolderBarHidden: false,
   isNavigateBarHidden: true,
   navigationBarTitle: '',
+  navigationBarBg: '#fff',
 };
 
 class NavigationBar extends Component {
@@ -88,7 +90,12 @@ class NavigationBar extends Component {
     const NAVIGATIONBAR_HEIGHT = isIOS ? IOS_NAVBAR_HEIGHT : ANDROID_NAVHAR_HEIGHT;
     const NAVIGATIONBAR_TOTAL_HEIGHT = NAVIGATIONBAR_HEIGHT + STATUSBAR_HEIGHT;
     const { showHomeButton, isBackButtonShow } = this.state;
-    const { navigationBarTitle = '', isHolderBarHidden, isNavigateBarHidden } = this.props;
+    const {
+      navigationBarTitle = '',
+      isHolderBarHidden,
+      isNavigateBarHidden,
+      navigationBarBg = '#fff',
+    } = this.props;
 
     return (
       <View className="navigation-bar-wrapper">
@@ -98,6 +105,7 @@ class NavigationBar extends Component {
             height: `${NAVIGATIONBAR_HEIGHT}px`,
             paddingTop: `${STATUSBAR_HEIGHT}px`,
             transform: `translateY(-${!isNavigateBarHidden ? 0 : NAVIGATIONBAR_TOTAL_HEIGHT}px)`,
+            backgroundColor: navigationBarBg,
           }}
         >
           <View className="navigation-left">

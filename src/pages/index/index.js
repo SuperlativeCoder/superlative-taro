@@ -1,10 +1,11 @@
 import Taro, { Component } from '@tarojs/taro';
-import { View, Button, Text } from '@tarojs/components';
+import { View, Button, Text, Image } from '@tarojs/components';
 import { connect } from '@tarojs/redux';
 import PropTypes from 'prop-types';
 
 import { add, minus, asyncAdd } from '../../actions/counter';
 import NavigationBar from '../../components/NavigationBar';
+import HeaderTitle from '../../components/HeaderTitle';
 import './index.scss';
 
 const propTypes = {
@@ -83,8 +84,21 @@ class Index extends Component {
     const { isNavigateBarHidden } = this.state;
 
     return (
-      <View className="index">
-        <NavigationBar isNavigateBarHidden={isNavigateBarHidden} navigationBarTitle="biaoti标题" />
+      <View className="pay-bill">
+        <NavigationBar
+          isNavigateBarHidden={isNavigateBarHidden}
+          navigationBarBg="rgb(178, 149, 116)"
+        />
+        <View className="title">
+          <HeaderTitle title="账单代缴" subTitle="当前房屋账单：金域华府1栋2单元B209" color="#fff" />
+          <View className="capsule">
+            <View className="text">其他房屋账单</View>
+            {/* <Image className="" src="" /> */}
+          </View>
+        </View>
+        <View className="bill-wrapper">
+          
+        </View>
         <Button className="add_btn" onClick={this.props.add}>+</Button>
         <Button className="dec_btn" onClick={this.props.dec}>-</Button>
         <Button className="dec_btn" onClick={this.props.asyncAdd}>async</Button>

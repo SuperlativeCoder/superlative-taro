@@ -1,0 +1,21 @@
+
+.header-title {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  box-sizing: border-box;
+  min-height: 144rpx;
+  padding: 0 40rpx;
+  color: #454545;
+  &-base {
+    margin: 0;
+    font-size: 56rpx;
+    font-weight: bold;
+  }
+
+  &-sub {
+    margin: 0;
+    font-size: 24rpx;
+    font-weight: 100;
+  }
+}
