@@ -20,7 +20,7 @@ const propTypes = {
   counter: PropTypes.shape({
     num: PropTypes.number,
   }),
-  bigTest: PropTypes.shape({}),
+  payBill: PropTypes.shape({}),
 };
 
 const defaultProps = {
@@ -30,7 +30,7 @@ const defaultProps = {
   getUserBillData: () => {},
   toggleCheckBoxShow: () => {},
   counter: {},
-  bigTest: {},
+  payBill: {},
 };
 
 
@@ -67,7 +67,7 @@ class PayBill extends Component {
 
   toIndexOne() {
     wx.navigateTo({
-      url: '/pages/index1/index',
+      url: '/pages/index/index',
     });
   }
 
