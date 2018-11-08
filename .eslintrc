@@ -7,6 +7,12 @@
       "jsx-a11y",
       "import"
   ],
+  "globals": {
+    "wx": false,
+    "taro": false,
+    "__wxConfig": false,
+    "getCurrentPages": false
+  },
   "rules": {
     "strict": 0,
     "max-len": ["error", 200, 4, {"ignoreUrls": true}],
@@ -15,7 +21,11 @@
     "global-require": 0,
     "no-param-reassign": 0,
     "generator-star-spacing": 0,
-    "no-console": 0
+    "no-console": 0,
+    "class-methods-use-this": 0,
+    "react/react-in-jsx-scope": 0,
+    "react/jsx-no-bind": 0,
+    "no-unused-vars": ["error", { "varsIgnorePattern": "[tT]aro" }],
+    "react/jsx-closing-tag-location": 0
   }
 }
-

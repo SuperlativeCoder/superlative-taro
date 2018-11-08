@@ -1,5 +1,5 @@
 import Taro, { Component } from '@tarojs/taro';
-import { View, Button, Text } from '@tarojs/components';
+import { View, Image } from '@tarojs/components';
 import PropTypes from 'prop-types';
 
 import { isIOS, STATUSBAR_HEIGHT } from '../../utils/platform';
@@ -11,22 +11,17 @@ const ICON_BACK = require('../../public/images/icon-back.svg');
 
 const propTypes = {
   isHolderBarHidden: PropTypes.bool,
-  isNavigateBarShow: PropTypes.bool,
   isNavigateBarHidden: PropTypes.bool,
   navigationBarTitle: PropTypes.string,
 };
 
-const defaultPropTypes = {
+const defaultProps = {
   isHolderBarHidden: false,
-  isNavigateBarShow: true,
+  isNavigateBarHidden: true,
   navigationBarTitle: '',
 };
 
 class NavigationBar extends Component {
-
-  config = {
-  }
-
   constructor(props) {
     super(props);
     this.state = {
@@ -53,7 +48,7 @@ class NavigationBar extends Component {
       });
     }
   }
-  
+
   handleNavigate(invokeParam) {
     const that = this;
     const param = this.navigateParam ? this.navigateParam : invokeParam;
@@ -90,26 +85,36 @@ class NavigationBar extends Component {
     });
   }
 
-  render () {
+  render() {
     const NAVIGATIONBAR_HEIGHT = isIOS ? IOS_NAVBAR_HEIGHT : ANDROID_NAVHAR_HEIGHT;
     const NAVIGATIONBAR_TOTAL_HEIGHT = NAVIGATIONBAR_HEIGHT + STATUSBAR_HEIGHT;
     const { showHomeButton, fontWeight, isBackButtonShow } = this.state;
     const { navigationBarTitle = '', isHolderBarHidden, isNavigateBarHidden } = this.props;
-    console.log(navigationBarTitle, 'navigationBarTitle')
+    console.log(navigationBarTitle, 'navigationBarTitle');
+
     return (
       <View className="navigation-bar-wrapper">
-        <View className="fixed-bar" style={{height: `${NAVIGATIONBAR_HEIGHT}px`, paddingTop: `${STATUSBAR_HEIGHT}px`, transform:`translateY(-${!isNavigateBarHidden?0:NAVIGATIONBAR_TOTAL_HEIGHT}px)`}}>
+        <View
+          className="fixed-bar"
+          style={{
+            height: `${NAVIGATIONBAR_HEIGHT}px`,
+            paddingTop: `${STATUSBAR_HEIGHT}px`,
+            transform: `translateY(-${!isNavigateBarHidden ? 0 : NAVIGATIONBAR_TOTAL_HEIGHT}px)`
+          }}
+        >
           <View className="navigation-left">
-            { isBackButtonShow && <View className="back-icon" onClick={this.navigateBack}>
-              <Image className="back-image" src={ICON_BACK}></Image>
-            </View>}
-            { showHomeButton && <View className="back-text" style={{fontWeight}}>首页</View>}
+            {
+              isBackButtonShow && <View className="back-icon" onClick={this.navigateBack}>
+                <Image className="back-image" src={ICON_BACK} />
+              </View>
+            }
+            { showHomeButton && <View className="back-text" style={{ fontWeight }}>首页</View>}
           </View>
           <View className="navigation-title">{navigationBarTitle}</View>
           <View className="navigation-right" />
         </View>
         {
-          !isHolderBarHidden && <View className="holder-bar" style={{height: `${!isNavigateBarHidden ? NAVIGATIONBAR_TOTAL_HEIGHT : 0}px`}} />
+          !isHolderBarHidden && <View className="holder-bar" style={{ height: `${!isNavigateBarHidden ? NAVIGATIONBAR_TOTAL_HEIGHT : 0}px` }} />
         }
       </View>
     );
@@ -117,6 +122,6 @@ class NavigationBar extends Component {
 }
 
 NavigationBar.propTypes = propTypes;
-NavigationBar.defaultPropTypes = defaultPropTypes;
+NavigationBar.defaultProps = defaultProps;
 
 export default NavigationBar;
