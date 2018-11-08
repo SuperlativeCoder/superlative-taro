@@ -109,7 +109,7 @@ class PayBill extends Component {
             bigTest.map((v, i) => <BillYearList data={v} key={i} toggleCheckBoxShow={toggleCheckBoxShow} currentParentIndex={i} />)
           }
         </View>
-        <Button className="add_btn" onClick={add}>+</Button>
+        {/* <Button className="add_btn" onClick={add}>+</Button>
         <Button className="dec_btn" onClick={minus}>-</Button>
         <Button className="dec_btn" onClick={asyncAdd}>async</Button>
         <Button className="dec_btn" onClick={toggleCheckBoxShow}>toggleCheckBoxShow</Button>
@@ -117,7 +117,7 @@ class PayBill extends Component {
         <Button className="dec_btn" onClick={this.toIndexOne}>to index1</Button>
         <Button onClick={this.toggleNavigateShow.bind(this)}>toggle navigate show</Button>
         <View><Text>{counter.num}</Text></View>
-        <View><Text>Hello, World</Text></View>
+        <View><Text>Hello, World</Text></View> */}
       </View>
     );
   }

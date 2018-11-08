@@ -1,6 +1,10 @@
+@import '../../public/styles/index.scss';
+
 $brown: rgb(178, 149, 116);
 
 .pay-bill {
+  min-height: 100vh;
+  background-color: $color-f5;
   .title {
     display: flex;
     position: relative;

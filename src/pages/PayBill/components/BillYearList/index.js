@@ -23,7 +23,7 @@ class BillYearList extends Component {
 
     return (
       <View className="bill-year-list">
-        <View className="title">{year}</View>
+        <View className="title">{year}年</View>
         {
           testData.map((v, i) => <BillMonthList data={v} currentIndex={i} toggleCheckBoxShow={toggleCheckBoxShow} currentParentIndex={currentParentIndex} key={i} noUnderline={testData.length - 1 === i} />)
         }
