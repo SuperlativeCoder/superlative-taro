@@ -99,7 +99,7 @@ class NavigationBar extends Component {
           style={{
             height: `${NAVIGATIONBAR_HEIGHT}px`,
             paddingTop: `${STATUSBAR_HEIGHT}px`,
-            transform: `translateY(-${!isNavigateBarHidden ? 0 : NAVIGATIONBAR_TOTAL_HEIGHT}px)`
+            transform: `translateY(-${!isNavigateBarHidden ? 0 : NAVIGATIONBAR_TOTAL_HEIGHT}px)`,
           }}
         >
           <View className="navigation-left">

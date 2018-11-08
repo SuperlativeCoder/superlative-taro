@@ -46,7 +46,7 @@ class Index extends Component {
   render() {
     return (
       <View className="index">
-        <NavigationBar isNavigateBarHidden={false} />
+        <NavigationBar isNavigateBarHidden={false} navigationBarTitle="biaoti" />
         <View><Text>Hello, World</Text></View>
       </View>
     );

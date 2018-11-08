@@ -84,7 +84,7 @@ class Index extends Component {
 
     return (
       <View className="index">
-        <NavigationBar isNavigateBarHidden={isNavigateBarHidden} />
+        <NavigationBar isNavigateBarHidden={isNavigateBarHidden} navigationBarTitle="biaoti标题" />
         <Button className="add_btn" onClick={this.props.add}>+</Button>
         <Button className="dec_btn" onClick={this.props.dec}>-</Button>
         <Button className="dec_btn" onClick={this.props.asyncAdd}>async</Button>
