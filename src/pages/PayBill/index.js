@@ -1,9 +1,11 @@
 import Taro, { Component } from '@tarojs/taro';
-import { View, Button, Text, Image } from '@tarojs/components';
+import { View, Button, Text } from '@tarojs/components';
 import { connect } from '@tarojs/redux';
 import PropTypes from 'prop-types';
 
+import combineActions from '../../middlewares/combineActions';
 import { add, minus, asyncAdd } from '../../actions/counter';
+import { toggleCheckBoxShow, getUserBillData } from '../../actions/payBill';
 import NavigationBar from '../../components/NavigationBar';
 import HeaderTitle from '../../components/HeaderTitle';
 import BillYearList from './components/BillYearList';
@@ -11,8 +13,10 @@ import './index.scss';
 
 const propTypes = {
   add: PropTypes.func,
-  dec: PropTypes.func,
+  minus: PropTypes.func,
   asyncAdd: PropTypes.func,
+  getUserBillData: PropTypes.func,
+  toggleCheckBoxShow: PropTypes.func,
   counter: PropTypes.shape({
     num: PropTypes.number,
   }),
@@ -20,25 +24,42 @@ const propTypes = {
 
 const defaultProps = {
   add: () => {},
-  dec: () => {},
+  minus: () => {},
   asyncAdd: () => {},
+  getUserBillData: () => {},
+  toggleCheckBoxShow: () => {},
   counter: {},
 };
 
 
 @connect(({ counter }) => ({
   counter,
-}), dispatch => ({
-  add() {
-    dispatch(add());
-  },
-  dec() {
-    dispatch(minus());
-  },
-  asyncAdd() {
-    dispatch(asyncAdd());
-  },
+}), combineActions({
+  add,
+  minus,
+  asyncAdd,
+  toggleCheckBoxShow,
+  getUserBillData,
 }))
+// @connect(({ counter }) => ({
+//   counter,
+// }), dispatch => ({
+//   add() {
+//     dispatch(add());
+//   },
+//   dec() {
+//     dispatch(minus());
+//   },
+//   asyncAdd() {
+//     dispatch(asyncAdd());
+//   },
+//   toggleCheckBoxShow() {
+//     dispatch(toggleCheckBoxShow());
+//   },
+//   getUserBillDataAction() {
+//     dispatch(getUserBillData());
+//   },
+// }))
 class PayBill extends Component {
   constructor(props) {
     super(props);
@@ -65,6 +86,8 @@ class PayBill extends Component {
 
   componentDidMount() {
     console.log(111);
+    const { getUserBillData } = this.props;
+    getUserBillData();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -74,10 +97,6 @@ class PayBill extends Component {
   componentWillUnmount() { }
 
   config = {
-    navigationBarTitleText: '首页1111',
-    window: {
-      navigationStyle: 'custom',
-    },
   }
 
   // componentDidShow() { console.log(2); }
@@ -118,8 +137,10 @@ class PayBill extends Component {
           }
         </View>
         <Button className="add_btn" onClick={this.props.add}>+</Button>
-        <Button className="dec_btn" onClick={this.props.dec}>-</Button>
+        <Button className="dec_btn" onClick={this.props.minus}>-</Button>
         <Button className="dec_btn" onClick={this.props.asyncAdd}>async</Button>
+        <Button className="dec_btn" onClick={this.props.toggleCheckBoxShow}>toggleCheckBoxShow</Button>
+        <Button className="dec_btn" onClick={this.props.getUserBillData}>getUserBillDataAction</Button>
         <Button className="dec_btn" onClick={this.toIndexOne}>to index1</Button>
         <Button onClick={this.toggleNavigateShow.bind(this)}>toggle navigate show</Button>
         <View><Text>{this.props.counter.num}</Text></View>

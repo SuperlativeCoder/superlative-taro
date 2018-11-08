@@ -1,6 +1,5 @@
-const systemInfo = wx.getSystemInfoSync();
+export const REGEXP_OS_ANDROID = /android/i;
+export const REGEXP_OS_IOS = /iphone|ipad|ipod/i;
 
-export const isIphonex = /iPhone X/ig.test(systemInfo.model);
-export const isIOS = /ios/ig.test(systemInfo.system);
-export const isAndroid = /android/ig.test(systemInfo.system);
-export const STATUSBAR_HEIGHT = systemInfo.statusBarHeight;
+export const REGEXP_APP_WECHAT = /micromessenger/i;
+export const REGEXP_APP_ZHUZHER = /zhuzher/i;

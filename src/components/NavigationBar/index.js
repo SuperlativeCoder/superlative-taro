@@ -2,11 +2,9 @@ import Taro, { Component } from '@tarojs/taro';
 import { View, Image } from '@tarojs/components';
 import PropTypes from 'prop-types';
 
-import { isIOS, STATUSBAR_HEIGHT } from '../../utils/platform';
+import { isIOS, STATUSBAR_HEIGHT, ANDROID_NAVHAR_HEIGHT, IOS_NAVBAR_HEIGHT } from '../../constants/weapp';
 import './index.scss';
 
-const ANDROID_NAVHAR_HEIGHT = 48;
-const IOS_NAVBAR_HEIGHT = 44;
 const ICON_BACK = require('../../public/images/icon-back.svg');
 
 const propTypes = {

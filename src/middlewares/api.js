@@ -1,7 +1,7 @@
 import { STATUS_REQUEST, STATUS_SUCCESS, STATUS_FAILURE } from '../constants';
 import { CALL_API } from '../constants/symbols';
 
-export default (store) => (next) => (action) => {
+export default store => next => (action) => {
   const callAPI = action[CALL_API];
   if (!callAPI) {
     return next(action);
@@ -46,7 +46,10 @@ export default (store) => (next) => (action) => {
           payload: res.data,
         }));
       }
-      success();
+      // 处理直接点击的情况
+      if (typeof success === 'function') {
+        success();
+      }
     },
     fail(err) {
       if (type) {
@@ -55,7 +58,9 @@ export default (store) => (next) => (action) => {
           payload: err,
         }));
       }
-      fail();
+      if (typeof fail === 'function') {
+        fail();
+      }
     },
     complete() {
       complete();
