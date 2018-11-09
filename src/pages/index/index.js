@@ -23,16 +23,14 @@ import './index.scss';
 }))
 class Index extends Component {
   componentDidMount() {
-    console.log(111);
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log(this.props, nextProps);
   }
 
   componentWillUnmount() { }
 
-  componentDidShow() { console.log(2); }
+  componentDidShow() { }
 
   componentDidHide() { }
 

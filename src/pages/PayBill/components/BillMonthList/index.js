@@ -29,7 +29,6 @@ const defaultProps = {
 // }))
 class BillMonthList extends Component {
   onBillListClick() {
-    console.log(this, this.props)
     const {
       currentIndex,
       currentParentIndex,

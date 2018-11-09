@@ -57,7 +57,6 @@ class PayBill extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log(this.props, nextProps);
   }
 
   componentWillUnmount() { }
@@ -89,7 +88,6 @@ class PayBill extends Component {
       payBill,
     } = this.props;
     const { bigTest } = payBill;
-    console.log(bigTest, this.props, 'test');
 
     return (
       <View className="pay-bill">
@@ -97,7 +95,7 @@ class PayBill extends Component {
           isNavigateBarHidden={isNavigateBarHidden}
           navigationBarBg="rgb(178, 149, 116)"
         />
-        <View className="title">
+        <View className="title" style={{}}>
           <HeaderTitle title="账单代缴" subTitle="当前房屋账单：金域华府1栋2单元B209" color="#fff" />
           <View className="capsule">
             <View className="text">其他房屋账单</View>
