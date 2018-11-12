@@ -1,8 +1,10 @@
 import Taro, { Component } from '@tarojs/taro';
-import { View } from '@tarojs/components';
+import { View, Image } from '@tarojs/components';
 import PropTypes from 'prop-types';
 
 import './index.scss';
+
+const ICON_ARROW = require('../../public/images/arrow_right.svg');
 
 const propTypes = {
   type: PropTypes.string,
@@ -19,10 +21,16 @@ class HeaderTitle extends Component {
     const {
       title,
       type,
+      children,
+      needRightArrow,
     } = this.props;
+    console.log(children, 'children', this.props);
     return (
       <View className={`custom-button ${type}`}>
         <View className="custom-button-content">{title}</View>
+        {
+          !needRightArrow && <Image className="right-arrow" src={ICON_ARROW} />
+        }
       </View>
     );
   }

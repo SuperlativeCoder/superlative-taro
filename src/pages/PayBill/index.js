@@ -1,5 +1,5 @@
 import Taro, { Component } from '@tarojs/taro';
-import { View, Button, Text } from '@tarojs/components';
+import { View, Button, Text, Image } from '@tarojs/components';
 import { connect } from '@tarojs/redux';
 import PropTypes from 'prop-types';
 
@@ -11,6 +11,8 @@ import HeaderTitle from '../../components/HeaderTitle';
 import CustomButton from '../../components/CustomButton';
 import BillYearList from './components/BillYearList';
 import './index.scss';
+
+const ICON_ARROW = require('../../public/images/arrow_grey_right.svg');
 
 const propTypes = {
   add: PropTypes.func,
@@ -115,7 +117,9 @@ class PayBill extends Component {
           <CustomButton
             title="去缴费"
             style="width:288rpx;height:96rpx;"
-          />
+          >
+            <Image src={ICON_ARROW} />
+          </CustomButton>
         </View>
         {/* <Button className="add_btn" onClick={add}>+</Button>
         <Button className="dec_btn" onClick={minus}>-</Button>

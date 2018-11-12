@@ -11,6 +11,10 @@
   color: #fff;
   font-weight: bold;
   font-size: 32rpx;
+  .right-arrow {
+    width: 50rpx;
+    height: 50rpx;
+  }
   &.default {
     background-color: $color-z1;
     &:active {
