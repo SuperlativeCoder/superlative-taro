@@ -8,6 +8,7 @@ import * as counterActions from '../../actions/counter';
 import * as payBillActions from '../../actions/payBill';
 import NavigationBar from '../../components/NavigationBar';
 import HeaderTitle from '../../components/HeaderTitle';
+import CustomButton from '../../components/CustomButton';
 import BillYearList from './components/BillYearList';
 import './index.scss';
 
@@ -106,6 +107,15 @@ class PayBill extends Component {
           {
             bigTest.map((v, i) => <BillYearList data={v} key={i} toggleCheckBoxShow={toggleCheckBoxShow} currentParentIndex={i} />)
           }
+        </View>
+        <View class="pay-bill-bottom">
+          <View class="bill-total">
+            实付金额：<Text class="bill">¥234.00</Text>
+          </View>
+          <CustomButton
+            title="去缴费"
+            style="width:288rpx;height:96rpx;"
+          />
         </View>
         {/* <Button className="add_btn" onClick={add}>+</Button>
         <Button className="dec_btn" onClick={minus}>-</Button>
