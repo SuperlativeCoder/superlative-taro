@@ -1,25 +1,23 @@
 
 import {
-  TOGGLE_CHECKBOX_SHOW,
-  GET_USER_BILL_DATA,
+  GET_ORDER_PAY_CONFIG,
 } from '../constants/payBill';
-import { MOCK_HOST } from '../constants/host';
+import env from '../env/index';
 import { CALL_API } from '../constants/symbols';
 
-export function toggleCheckBoxShow(index) {
-  return {
-    type: TOGGLE_CHECKBOX_SHOW,
-    payload: index,
-  };
-}
-
-export function getUserBillData(success, error) {
+export function getOrderPayConfig(data, success, error) {
   return {
     [CALL_API]: {
-      url: `${MOCK_HOST}/app/mock/64/GET/1`,
-      type: GET_USER_BILL_DATA,
+      url: `${env.FD_HOST_TEST}/nf/v1/payment/wx`,
+      data: {
+        house_code: data.houseCode,
+        end_date: data.endDate,
+      },
+      method: 'POST',
+      type: GET_ORDER_PAY_CONFIG,
       success,
       error,
+      responseCode: 200,
     },
   };
 }

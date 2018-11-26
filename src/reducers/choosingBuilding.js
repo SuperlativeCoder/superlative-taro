@@ -1,7 +1,7 @@
 import LOADING_STATUS from '../constants/loadingStatus';
 import {
-  GET_ORDER_PAY_CONFIG,
-} from '../constants/payBill';
+  GET_BUILDING_BY_PROJECT,
+} from '../constants/choosingBuilding';
 import {
   request,
   success,
@@ -9,23 +9,24 @@ import {
 } from '../constants/actionTypes';
 
 const initialState = {
-  paymentConfig: null,
+  buildings: null,
   loadingStatus: LOADING_STATUS.DEFAULT,
 };
 
 export default (state = initialState, action = {}) => {
   const { payload, type } = action;
   switch (type) {
-    case request(GET_ORDER_PAY_CONFIG):
+    case request(GET_BUILDING_BY_PROJECT):
       return {
         ...state,
+
       };
-    case success(GET_ORDER_PAY_CONFIG):
+    case success(GET_BUILDING_BY_PROJECT):
       return {
         ...state,
-        paymentConfig: payload,
+        buildings: payload,
       };
-    case failure(GET_ORDER_PAY_CONFIG):
+    case failure(GET_BUILDING_BY_PROJECT):
       return {
         ...state,
       };
