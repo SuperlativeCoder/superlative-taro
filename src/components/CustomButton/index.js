@@ -4,16 +4,24 @@ import PropTypes from 'prop-types';
 
 import './index.scss';
 
-const ICON_ARROW = require('../../public/images/arrow_right.svg');
-
 const propTypes = {
   type: PropTypes.string,
   title: PropTypes.string,
+  iconPos: PropTypes.oneOf(['left', 'right', '']),
+  iconSrc: PropTypes.string,
+  disabled: PropTypes.bool,
+  styles: PropTypes.shape({}),
+  onClick: PropTypes.func,
 };
 
 const defaultProps = {
   type: 'default',
   title: '',
+  iconPos: '',
+  iconSrc: '',
+  disabled: false,
+  styles: {},
+  onClick: () => {},
 };
 
 class HeaderTitle extends Component {
@@ -21,15 +29,27 @@ class HeaderTitle extends Component {
     const {
       title,
       type,
-      children,
-      needRightArrow,
+      iconPos,
+      iconSrc,
+      disabled,
+      styles,
+      onClick,
     } = this.props;
-    console.log(children, 'children', this.props);
+    console.log(styles, 'style');
+
     return (
-      <View className={`custom-button ${type}`}>
+      <View
+        className={`custom-button ${type}`}
+        disabled={disabled}
+        style={styles}
+        onClick={onClick}
+      >
+        {
+          iconPos === 'left' && <Image className="left-arrow" src={iconSrc} />
+        }
         <View className="custom-button-content">{title}</View>
         {
-          !needRightArrow && <Image className="right-arrow" src={ICON_ARROW} />
+          iconPos === 'right' && <Image className="right-arrow" src={iconSrc} />
         }
       </View>
     );
