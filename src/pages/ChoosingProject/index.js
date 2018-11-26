@@ -10,11 +10,12 @@ import GreySpace from '../../components/GreySpace';
 import CustomButton from '../../components/CustomButton';
 import EmptyPage from '../../components/EmptyPage';
 import InputItem from '../../components/InputItem';
+import PopupPage from '../../components/PopupPage';
 import IMG_TRANGLE from '../../public/images/st_triangle_default@2x.png';
 import IMG_MUTISELECT from '../../public/images/multiselect_unselected@2x.png';
 
 import './index.scss';
-
+import Dialog from './dialog';
 
 @connect(({ counter }) => ({
   counter,
@@ -27,7 +28,10 @@ class AuthLanding extends Component {
 
     this.state = {
       inputValue: '',
+      isPopupShow: true,
     };
+
+    this.togglePopupShpw = this.togglePopupShpw.bind(this);
   }
   componentDidMount() {
   }
@@ -49,7 +53,16 @@ class AuthLanding extends Component {
     console.log(e.detail.value, 'e');
   }
 
+  togglePopupShpw() {
+    this.setState({
+      isPopupShow: !this.state.isPopupShow,
+    });
+  }
+
   render() {
+    const {
+      isPopupShow,
+    } = this.state;
     return (
       <View class="choosing-project">
         <NavigationBar
@@ -90,6 +103,17 @@ class AuthLanding extends Component {
           onInput={this.onInput}
           title="123"
         />
+        <PopupPage
+          isPopupShow={isPopupShow}
+          onTogglePopupShow={this.togglePopupShpw}
+        >
+          <View>1111</View>
+        </PopupPage>
+        <Dialog>
+          <View className="dialog-message">
+            Thank you for using Taro.
+          </View>
+        </Dialog>
         {/* <grey-space2
           title="全部社区"
         ></grey-space2>

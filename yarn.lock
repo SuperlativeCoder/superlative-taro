@@ -182,9 +182,13 @@
   version "1.0.3"
   resolved "http://10.0.58.159:4873/@tarojs%2ftaro/-/taro-1.0.3.tgz#5bab6f5e5d6f59f9baa31403ceb05c6a16b54e48"
 
-"@tarojs/taro@1.1.2", "@tarojs/taro@^1.1.2":
+"@tarojs/taro@1.1.2":
   version "1.1.2"
   resolved "http://10.0.58.159:4873/@tarojs%2ftaro/-/taro-1.1.2.tgz#52c53b5fc5a108ac1a9bafcdee9c947e7f51fc9c"
+
+"@tarojs/taro@^1.1.9":
+  version "1.1.9"
+  resolved "https://registry.npmjs.org/@tarojs/taro/-/taro-1.1.9.tgz#210554e9275f459b370766cefea40091d2fac16c"
 
 "@tarojs/utils@1.0.3":
   version "1.0.3"
