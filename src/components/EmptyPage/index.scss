@@ -1,0 +1,46 @@
+
+@import '../../public/styles/index.scss';
+
+.empty-page {
+  @include flex-center;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  .image {
+    width: 372rpx;
+    height: 372rpx;
+    background: url('https://img.4009515151.com/icon_empty_content@2x.png') center center/100% 100% no-repeat;
+    &.default {
+      background-image: url('https://img.4009515151.com/icon_empty_content@2x.png')
+    }
+    &.bill {
+      background-image: url('https://img.4009515151.com/icon_empty_content@2x.png')
+    }
+    &.dialogue {
+      background-image: url('https://img.4009515151.com/icon_empty_dialogue@2x.png')
+    }
+    &.vistor {
+      background-image: url('https://img.4009515151.com/icon_empty_vistor@2x.png')
+    }
+    &.car {
+      background-image: url('https://img.4009515151.com/icon_empty_car@2x.png')
+    }
+    &.housekeeper {
+      background-image: url('https://img.4009515151.com/icon_empty_housekeeper@2x.png')
+    }
+    &.noservice {
+      background-image: url('https://img.4009515151.com/icon_error_noservice@2x.png')
+    }
+    &.nointernet {
+      background-image: url('https://img.4009515151.com/icon_error_nointernet@2x.png')
+    }
+    &.house {
+      background-image: url('https://img.4009515151.com/icon_empty_house@2x.png')
+    }
+  }
+  .text {
+    font-size: 32rpx;
+    color: $color-f3;
+  }
+
+}

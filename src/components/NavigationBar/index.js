@@ -11,7 +11,7 @@ const propTypes = {
   isShow: PropTypes.bool,
   isFixed: PropTypes.bool,
   title: PropTypes.string,
-  style: PropTypes.shape({}),
+  styles: PropTypes.shape({}),
   navigateParam: PropTypes.shape({}),
 };
 
@@ -19,7 +19,7 @@ const defaultProps = {
   isShow: true,
   isFixed: true,
   title: '',
-  style: {},
+  styles: {},
   navigateParam: {},
 };
 
@@ -98,13 +98,13 @@ class NavigationBar extends Component {
     const {
       isShow,
       isFixed,
-      style,
+      styles,
       title,
     } = this.props;
     const totalHeight = `-${height + paddingTop}rpx`;
 
     return (
-      <View class="navigation-bar-wrapper" style={style}>
+      <View class="navigation-bar-wrapper" style={styles}>
         <View
           class="navigation-bar"
           style={{

@@ -7,21 +7,21 @@ import './index.scss';
 const propTypes = {
   title: PropTypes.string,
   subTitle: PropTypes.string,
-  style: PropTypes.shape({}),
+  styles: PropTypes.shape({}),
 };
 
 const defaultProps = {
   title: '',
   subTitle: '',
-  style: {},
+  styles: {},
 };
 
 class HeaderTitle extends Component {
   render() {
-    const { title, subTitle, style } = this.props;
+    const { title, subTitle, styles } = this.props;
 
     return (
-      <View className="header-title" style={style}>
+      <View className="header-title" style={styles}>
         <View className="header-title-base">{title}</View>
         <View className="header-title-sub">{subTitle}</View>
       </View>

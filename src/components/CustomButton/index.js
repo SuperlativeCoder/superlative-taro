@@ -24,7 +24,7 @@ const defaultProps = {
   onClick: () => {},
 };
 
-class HeaderTitle extends Component {
+class CustomButton extends Component {
   render() {
     const {
       title,
@@ -56,7 +56,7 @@ class HeaderTitle extends Component {
   }
 }
 
-HeaderTitle.propTypes = propTypes;
-HeaderTitle.defaultProps = defaultProps;
+CustomButton.propTypes = propTypes;
+CustomButton.defaultProps = defaultProps;
 
-export default HeaderTitle;
+export default CustomButton;

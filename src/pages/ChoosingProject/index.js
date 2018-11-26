@@ -8,6 +8,8 @@ import NavigationBar from '../../components/NavigationBar';
 import HeaderTitle from '../../components/HeaderTitle';
 import GreySpace from '../../components/GreySpace';
 import CustomButton from '../../components/CustomButton';
+import EmptyPage from '../../components/EmptyPage';
+import InputItem from '../../components/InputItem';
 import IMG_TRANGLE from '../../public/images/st_triangle_default@2x.png';
 import IMG_MUTISELECT from '../../public/images/multiselect_unselected@2x.png';
 
@@ -20,6 +22,13 @@ import './index.scss';
   ...AuthLandingActions,
 }))
 class AuthLanding extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      inputValue: '',
+    };
+  }
   componentDidMount() {
   }
 
@@ -34,6 +43,10 @@ class AuthLanding extends Component {
 
   onClick() {
     console.log(111)
+  }
+
+  onInput(e) {
+    console.log(e.detail.value, 'e');
   }
 
   render() {
@@ -69,6 +82,13 @@ class AuthLanding extends Component {
         <CustomButton
           onClick={this.onClick}
           styles={{ width: '200rpx', height: '200rpx' }}
+          iconPos="right"
+          iconSrc={IMG_TRANGLE}
+        />
+        <EmptyPage title="123" />
+        <InputItem
+          onInput={this.onInput}
+          title="123"
         />
         {/* <grey-space2
           title="全部社区"

@@ -19,7 +19,7 @@ const defaultProps = {
   style: {},
 };
 
-class CheckBox extends Component {
+class GreySpace extends Component {
   render() {
     const { title, type, style } = this.props;
 
@@ -33,7 +33,7 @@ class CheckBox extends Component {
   }
 }
 
-CheckBox.propTypes = propTypes;
-CheckBox.defaultProps = defaultProps;
+GreySpace.propTypes = propTypes;
+GreySpace.defaultProps = defaultProps;
 
-export default CheckBox;
+export default GreySpace;
