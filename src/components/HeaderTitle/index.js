@@ -7,23 +7,23 @@ import './index.scss';
 const propTypes = {
   title: PropTypes.string,
   subTitle: PropTypes.string,
-  color: PropTypes.string,
+  style: PropTypes.shape({}),
 };
 
 const defaultProps = {
   title: '',
   subTitle: '',
-  color: '#454545',
+  style: {},
 };
 
 class HeaderTitle extends Component {
   render() {
-    const { title, subTitle, color } = this.props;
+    const { title, subTitle, style } = this.props;
 
     return (
-      <View className="header-title">
-        <View className="header-title-base" style={{ color }}>{title}</View>
-        <View className="header-title-sub" style={{ color }}>{subTitle}</View>
+      <View className="header-title" style={style}>
+        <View className="header-title-base">{title}</View>
+        <View className="header-title-sub">{subTitle}</View>
       </View>
     );
   }

@@ -23,7 +23,9 @@ class App extends Component {
 
   config = {
     pages: [
-      'pages/PayBill/index',
+      'pages/ConfirmBill/index',
+      'pages/AuthLanding/index',
+      'pages/ChoosingProject/index',
       'pages/index/index',
     ],
     window: {

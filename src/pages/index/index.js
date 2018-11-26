@@ -2,7 +2,7 @@ import Taro, { Component } from '@tarojs/taro';
 import { View, Text } from '@tarojs/components';
 import { connect } from '@tarojs/redux';
 
-import { add, minus, asyncAdd } from '../../actions/counter';
+// import { add, minus, asyncAdd } from '../../actions/counter';
 import NavigationBar from '../../components/NavigationBar';
 
 import './index.scss';
@@ -11,15 +11,15 @@ import './index.scss';
 @connect(({ counter }) => ({
   counter,
 }), dispatch => ({
-  add() {
-    dispatch(add());
-  },
-  dec() {
-    dispatch(minus());
-  },
-  asyncAdd() {
-    dispatch(asyncAdd());
-  },
+  // add() {
+  //   dispatch(add());
+  // },
+  // dec() {
+  //   dispatch(minus());
+  // },
+  // asyncAdd() {
+  //   dispatch(asyncAdd());
+  // },
 }))
 class Index extends Component {
   componentDidMount() {

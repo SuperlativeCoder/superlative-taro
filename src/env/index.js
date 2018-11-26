@@ -3,7 +3,7 @@ import * as PROD from './prod';
 
 let env;
 
-if (__ENV__ === 'development') {
+if ('__ENV__' === 'development') {
   env = DEV;
 } else {
   env = PROD;

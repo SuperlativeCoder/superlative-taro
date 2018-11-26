@@ -8,17 +8,17 @@ import './index.scss';
 const ICON_BACK = require('../../public/images/icon-back.svg');
 
 const propTypes = {
-  isHolderBarHidden: PropTypes.bool,
-  isNavigateBarHidden: PropTypes.bool,
-  navigationBarTitle: PropTypes.string,
-  navigationBarBg: PropTypes.string,
+  isHoldBarHidden: PropTypes.bool,
+  hidden: PropTypes.bool,
+  title: PropTypes.string,
+  style: PropTypes.shape({}),
 };
 
 const defaultProps = {
-  isHolderBarHidden: false,
-  isNavigateBarHidden: true,
-  navigationBarTitle: '',
-  navigationBarBg: '#fff',
+  isHoldBarHidden: false,
+  hidden: false,
+  title: '',
+  style: {},
 };
 
 class NavigationBar extends Component {
@@ -89,21 +89,20 @@ class NavigationBar extends Component {
     const NAVIGATIONBAR_TOTAL_HEIGHT = NAVIGATIONBAR_HEIGHT + STATUSBAR_HEIGHT;
     const { showHomeButton, isBackButtonShow } = this.state;
     const {
-      navigationBarTitle = '',
-      isHolderBarHidden,
-      isNavigateBarHidden,
-      navigationBarBg = '#fff',
+      title,
+      isHoldBarHidden,
+      hidden,
+      style,
     } = this.props;
 
     return (
-      <View className="navigation-bar-wrapper">
+      <View className="navigation-bar-wrapper" style={style}>
         <View
           className="fixed-bar"
           style={{
             height: `${NAVIGATIONBAR_HEIGHT}px`,
             paddingTop: `${STATUSBAR_HEIGHT}px`,
-            transform: `translateY(-${!isNavigateBarHidden ? 0 : NAVIGATIONBAR_TOTAL_HEIGHT}px)`,
-            backgroundColor: navigationBarBg,
+            transform: `translateY(-${!hidden ? 0 : NAVIGATIONBAR_TOTAL_HEIGHT}px)`,
           }}
         >
           <View className="navigation-left">
@@ -114,11 +113,11 @@ class NavigationBar extends Component {
             }
             { showHomeButton && <View className="back-text">首页</View>}
           </View>
-          <View className="navigation-title" style={{ fontWeight: 'bold' }}>{navigationBarTitle}</View>
+          <View className="navigation-title" style={{ fontWeight: 'bold' }}>{title}</View>
           <View className="navigation-right" />
         </View>
         {
-          !isHolderBarHidden && <View className="holder-bar" style={{ height: `${!isNavigateBarHidden ? NAVIGATIONBAR_TOTAL_HEIGHT : 0}px` }} />
+          !isHoldBarHidden && <View className="holder-bar" style={{ height: `${!hidden ? NAVIGATIONBAR_TOTAL_HEIGHT : 0}px` }} />
         }
       </View>
     );

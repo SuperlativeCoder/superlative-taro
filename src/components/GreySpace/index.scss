@@ -1,0 +1,25 @@
+
+@import '../../public/styles/index.scss';
+
+.grey-space {
+  width: 100%;
+  background-color: $color-f5;
+  box-sizing: border-box;
+  padding: 24rpx 40rpx 14rpx;
+  .content {
+    color: $color-f2;
+    font-size: 24rpx;
+  }
+  &.small {
+    padding: 24rpx 40rpx 14rpx;
+    .content {
+      font-size: 24rpx;
+    }
+  }
+  &.middle {
+    padding: 38rpx 40rpx 20rpx;
+    .content {
+      font-size: 28rpx;
+    }
+  }
+}

@@ -4,8 +4,8 @@ import { connect } from '@tarojs/redux';
 import PropTypes from 'prop-types';
 
 import combineActions from '../../middlewares/combineActions';
-import * as counterActions from '../../actions/counter';
-import * as payBillActions from '../../actions/payBill';
+// import * as counterActions from '../../actions/counter';
+import * as confirmBillActions from '../../actions/confirmBill';
 import NavigationBar from '../../components/NavigationBar';
 import HeaderTitle from '../../components/HeaderTitle';
 import CustomButton from '../../components/CustomButton';
@@ -15,34 +15,34 @@ import './index.scss';
 const ICON_ARROW = require('../../public/images/arrow_grey_right.svg');
 
 const propTypes = {
-  add: PropTypes.func,
-  minus: PropTypes.func,
-  asyncAdd: PropTypes.func,
+  // add: PropTypes.func,
+  // minus: PropTypes.func,
+  // asyncAdd: PropTypes.func,
   getUserBillData: PropTypes.func,
   toggleCheckBoxShow: PropTypes.func,
-  counter: PropTypes.shape({
-    num: PropTypes.number,
-  }),
+  // counter: PropTypes.shape({
+  //   num: PropTypes.number,
+  // }),
   payBill: PropTypes.shape({}),
 };
 
 const defaultProps = {
-  add: () => {},
-  minus: () => {},
-  asyncAdd: () => {},
+  // add: () => {},
+  // minus: () => {},
+  // asyncAdd: () => {},
   getUserBillData: () => {},
   toggleCheckBoxShow: () => {},
-  counter: {},
+  // counter: {},
   payBill: {},
 };
 
 
-@connect(({ counter, payBill }) => ({
-  counter,
+@connect(({ payBill }) => ({
+  // counter,
   payBill,
 }), combineActions({
-  ...counterActions,
-  ...payBillActions,
+  // ...counterActions,
+  ...confirmBillActions,
 }))
 
 class PayBill extends Component {
@@ -121,15 +121,6 @@ class PayBill extends Component {
             <Image src={ICON_ARROW} />
           </CustomButton>
         </View>
-        {/* <Button className="add_btn" onClick={add}>+</Button>
-        <Button className="dec_btn" onClick={minus}>-</Button>
-        <Button className="dec_btn" onClick={asyncAdd}>async</Button>
-        <Button className="dec_btn" onClick={toggleCheckBoxShow}>toggleCheckBoxShow</Button>
-        <Button className="dec_btn" onClick={getUserBillData}>getUserBillDataAction</Button>
-        <Button className="dec_btn" onClick={this.toIndexOne}>to index1</Button>
-        <Button onClick={this.toggleNavigateShow.bind(this)}>toggle navigate show</Button>
-        <View><Text>{counter.num}</Text></View>
-        <View><Text>Hello, World</Text></View> */}
       </View>
     );
   }
