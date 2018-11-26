@@ -2,31 +2,35 @@ import Taro, { Component } from '@tarojs/taro';
 import { View, Image } from '@tarojs/components';
 import PropTypes from 'prop-types';
 
-import { isIOS, STATUSBAR_HEIGHT, ANDROID_NAVHAR_HEIGHT, IOS_NAVBAR_HEIGHT } from '../../constants/weapp';
+import { isIOS, STATUSBAR_HEIGHT, ANDROID_NAVBAR_HEIGHT, IOS_NAVBAR_HEIGHT } from '../../constants/weapp';
 import './index.scss';
 
 const ICON_BACK = require('../../public/images/icon-back.svg');
 
 const propTypes = {
-  isHoldBarHidden: PropTypes.bool,
-  hidden: PropTypes.bool,
+  isShow: PropTypes.bool,
+  isFixed: PropTypes.bool,
   title: PropTypes.string,
   style: PropTypes.shape({}),
+  navigateParam: PropTypes.shape({}),
 };
 
 const defaultProps = {
-  isHoldBarHidden: false,
-  hidden: false,
+  isShow: true,
+  isFixed: true,
   title: '',
   style: {},
+  navigateParam: {},
 };
 
 class NavigationBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isBackButtonShow: false,
+      height: isIOS ? IOS_NAVBAR_HEIGHT * 2 : ANDROID_NAVBAR_HEIGHT * 2,
+      paddingTop: STATUSBAR_HEIGHT * 2,
       showHomeButton: false,
+      isBackButtonShow: false,
     };
   }
 
@@ -53,19 +57,19 @@ class NavigationBar extends Component {
     const param = this.navigateParam ? this.navigateParam : invokeParam;
 
     if (param && param.navigateBackType === 2) {
-      this.methods.navigateBackHome();
+      this.navigateBackHome();
     } else if (param && param.navigateBackType === 3 && param.content) {
       wx.showModal({
         title: param.title || '',
         content: param.content,
         success(res) {
           if (res.confirm) {
-            that.methods.navigateBack();
+            that.navigateBack();
           }
         },
       });
     } else {
-      this.methods.navigateBack();
+      this.navigateBack();
     }
   }
   navigateBack() {
@@ -85,40 +89,61 @@ class NavigationBar extends Component {
   }
 
   render() {
-    const NAVIGATIONBAR_HEIGHT = isIOS ? IOS_NAVBAR_HEIGHT : ANDROID_NAVHAR_HEIGHT;
-    const NAVIGATIONBAR_TOTAL_HEIGHT = NAVIGATIONBAR_HEIGHT + STATUSBAR_HEIGHT;
-    const { showHomeButton, isBackButtonShow } = this.state;
     const {
-      title,
-      isHoldBarHidden,
-      hidden,
+      height,
+      paddingTop,
+      showHomeButton,
+      isBackButtonShow,
+    } = this.state;
+    const {
+      isShow,
+      isFixed,
       style,
+      title,
     } = this.props;
+    const totalHeight = `-${height + paddingTop}rpx`;
 
     return (
-      <View className="navigation-bar-wrapper" style={style}>
+      <View class="navigation-bar-wrapper" style={style}>
         <View
-          className="fixed-bar"
+          class="navigation-bar"
           style={{
-            height: `${NAVIGATIONBAR_HEIGHT}px`,
-            paddingTop: `${STATUSBAR_HEIGHT}px`,
-            transform: `translateY(-${!hidden ? 0 : NAVIGATIONBAR_TOTAL_HEIGHT}px)`,
+            paddingTop: `${paddingTop}rpx`,
+            height: `${height}rpx`,
+            lineHeight: `${height}rpx`,
+            position: isFixed && 'fixed',
+            transform: `translateY(${isShow ? '0' : totalHeight})`,
           }}
         >
-          <View className="navigation-left">
-            {
-              isBackButtonShow && <View className="back-icon" onClick={this.navigateBack}>
-                <Image className="back-image" src={ICON_BACK} />
+          {
+            isBackButtonShow && (
+              <View
+                class="back"
+                style={{
+                  paddingTop: `${paddingTop}rpx`,
+                  height: `${height}rpx`,
+                  lineHeight: `${height}rpx`,
+                }}
+                onClick={this.handleNavigate}
+              >
+                <View class="icon-back">
+                  <image src={ICON_BACK} />
+                </View>
+                { showHomeButton && <View class="back-home">首页</View> }
               </View>
-            }
-            { showHomeButton && <View className="back-text">首页</View>}
-          </View>
-          <View className="navigation-title" style={{ fontWeight: 'bold' }}>{title}</View>
-          <View className="navigation-right" />
+            )
+          }
+          
+          <View class="title">{title}</View>
         </View>
-        {
-          !isHoldBarHidden && <View className="holder-bar" style={{ height: `${!hidden ? NAVIGATIONBAR_TOTAL_HEIGHT : 0}px` }} />
-        }
+        <View
+          class="navigation-bar-holder"
+          style={{
+            paddingTop: `${paddingTop}rpx`,
+            height: `${isFixed && isShow ? height : 0}rpx`,
+            lineHeight: `${height}rpx`,
+          }}
+        />
       </View>
     );
   }

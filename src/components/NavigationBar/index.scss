@@ -1,41 +1,54 @@
+@import '../../public/styles/index.scss';
+
 .navigation-bar-wrapper {
-  .fixed-bar {
-    position: fixed;
-    z-index: 100;
-    display: flex;
-    align-items: center;
-    top: 0;
+  .navigation-bar{
+    position: relative;
     left: 0;
-    width: 100%;
-    min-height: 64px;
+    top: 0;
+    width: 750rpx;
+    color: #fff;
+    z-index: 100;
+    text-align: center;
     transition: transform .3s;
-    .navigation-left {
-      flex: 0 0 160rpx;
+    font-size: 40rpx;
+    color: $color-f1;
+    background-color: #fff;
+
+    .title {
+      font-weight: bold;
+    }
+
+    .back{
+      position: absolute;
+      left: 0;
+      top: 0;
+      min-width: 70rpx;
       display: flex;
-      .back-icon {
+      justify-content: center;
+      align-items: center;
+
+      .icon-back{
         display: flex;
         justify-content: center;
         align-items: center;
-        .back-image {
+        image {
           width: 40rpx;
           height: 40rpx;
-          padding-left: 20rpx;
+          padding-left: 34rpx;
         }
       }
-      .back-text {
-        font-size: 36rpx;
-        color: #454545;
+
+      .back-home{
+        width: auto;
+        text-align: center;
+        font-size: 30rpx;
       }
-    }
-    .navigation-title {
-      flex: 1;
-      text-align: center;
-    }
-    .navigation-right {
-      flex: 0 0 160rpx;
-    }
+    } 
   }
-  .holder-bar {
-    transition: transform .3s;
+
+  .navigation-bar-holder{
+    background: transparent;
+    position: relative;
+    z-index: 2;
   }
 }
