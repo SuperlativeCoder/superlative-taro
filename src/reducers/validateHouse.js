@@ -15,10 +15,18 @@ const initialState = {
 export default (state = initialState, action = {}) => {
   const { payload, type } = action;
   switch (type) {
+    case request(CHECK_HOUSE_CODE):
+      return {
+        ...state,
+      };
     case success(CHECK_HOUSE_CODE):
       return {
         ...state,
-        projects: payload,
+        houses: payload,
+      };
+    case failure(CHECK_HOUSE_CODE):
+      return {
+        ...state,
       };
     default:
       return state;

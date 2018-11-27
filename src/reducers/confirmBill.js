@@ -89,6 +89,9 @@ export default (state = initialState, action = {}) => {
     case failure(GET_USER_BILL_DATA):
       return {
         ...state,
+        hisCharge: 0,
+        totalCharge: 0,
+        billList: null,
       };
     default:
       return state;

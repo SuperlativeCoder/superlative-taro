@@ -12,13 +12,9 @@ import * as choosingBuildingActions from '../../actions/choosingBuilding';
 import './index.scss';
 
 
-@connect(({ choosingBuilding }) => {
-  console.log(arguments, choosingBuilding, '111111111')
-  return {
-    // counter,
-    choosingBuilding,
-  }
-}, combineActions({
+@connect(({ choosingBuilding }) => ({
+  choosingBuilding,
+}), combineActions({
   ...choosingBuildingActions,
 }))
 class ChoosingBuilding extends Component {
@@ -69,7 +65,6 @@ class ChoosingBuilding extends Component {
     const {
       buildings,
     } = this.props.choosingBuilding;
-    console.log(buildings, this.props, 'buildings')
     return (
       <View className="choosing-house">
         <View class="choosing-house">

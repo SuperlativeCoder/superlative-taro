@@ -1,17 +1,23 @@
 
 import {
   CHECK_HOUSE_CODE,
-} from '../constants/choosingBuilding';
+} from '../constants/validateHouse';
 import env from '../env/index';
 import { CALL_API } from '../constants/symbols';
 
-export function checkHouseCode(houseCode, success, error) {
+export function checkHouseCode(safeCode, houseCode, success, error) {
   return {
     [CALL_API]: {
-      url: `${env.FD_HOST_TEST}/api/zhuzher/cities`,
+      url: `${env.FD_HOST_TEST}/nf/v1/binding/house`,
       type: CHECK_HOUSE_CODE,
+      method: 'POST',
+      data: {
+        safe_code: safeCode,
+        house_code: houseCode,
+      },
       success,
       error,
+      responseCode: 200,
     },
   };
 }

@@ -1,9 +1,8 @@
 
 import {
   GET_USER_DATA_BY_CODE,
-  // GET_USER_BILL_DATA,
 } from '../constants/authLanding';
-import env from '../env';
+import env from '../env/index';
 import { CALL_API } from '../constants/symbols';
 
 export function getUserDataByCode(code, success, error) {

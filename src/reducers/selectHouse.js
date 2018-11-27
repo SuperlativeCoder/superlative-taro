@@ -19,15 +19,23 @@ export default (state = initialState, action = {}) => {
     case request(GET_BINDING_HOUSES):
       return {
         ...state,
+        loadingStatus: LOADING_STATUS.BEGIN,
       };
     case success(GET_BINDING_HOUSES):
       return {
         ...state,
-        houses: payload,
+        houses: payload.houses.map((v) => {
+          v.subName = v.house_name.split(v.project_name)[1];
+          v.code = v.house_code;
+          v.name = v.house_name;
+          return v;
+        }),
+        loadingStatus: LOADING_STATUS.SUCCESS,
       };
     case failure(GET_BINDING_HOUSES):
       return {
         ...state,
+        loadingStatus: LOADING_STATUS.FAILURE,
       };
     default:
       return state;
