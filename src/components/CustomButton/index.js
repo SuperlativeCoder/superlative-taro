@@ -45,11 +45,11 @@ class CustomButton extends Component {
         onClick={onClick}
       >
         {
-          iconPos === 'left' && <Image className="left-arrow" src={iconSrc} />
+          iconPos === 'left' && <Image className="deco left" src={iconSrc} />
         }
         <View className="custom-button-content">{title}</View>
         {
-          iconPos === 'right' && <Image className="right-arrow" src={iconSrc} />
+          iconPos === 'right' && <Image className="deco right" src={iconSrc} />
         }
       </View>
     );

@@ -1,0 +1,36 @@
+@import '../../public/styles/index.scss';
+
+.select-house {
+  min-height: 100%;
+  background-color: $color-f5;
+  .notice-bar {
+    height: 110rpx;
+    @include flex-center;
+    justify-content: flex-start;
+    padding-left: 40rpx;
+    .content {
+      margin-top: 28rpx;
+      font-size: 28rpx;
+      color: $color-f3;
+      // text-align: center;
+    }
+  }
+
+  .house-list {
+    box-sizing: border-box;
+    padding-left: 40rpx;
+    background-color: #fff;
+  }
+
+  .other-house {
+    height: 176rpx;
+    box-sizing: border-box;
+    padding: 40rpx;
+    .image {
+      width: 40rpx;
+      height: 40rpx;
+      margin-right: 10rpx;
+    }
+  }
+}
+

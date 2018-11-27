@@ -1,0 +1,29 @@
+@import '../../../../public/styles/index.scss';
+
+.house-bar {
+  @include flex-between;
+  height: 144rpx;
+  width: 100%;
+  // border-bottom: 1rpx solid $color-f4;
+  font-size: 32rpx;
+  color: $color-f1;
+
+  .bar-left {
+    .project {
+
+    }
+
+    .house {
+      font-size: 24rpx;
+      color: $color-f3;
+    }
+  }
+
+  .bar-right {
+    padding-right: 40rpx;
+    image {
+      width: 40rpx;
+      height: 40rpx;
+    }
+  }
+}

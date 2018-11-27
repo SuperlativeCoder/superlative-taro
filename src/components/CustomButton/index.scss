@@ -9,6 +9,18 @@
   color: #fff;
   font-weight: bold;
   font-size: 32rpx;
+  .deco {
+    width: 40px;
+    height: 40px;
+
+    &.left {
+      margin-right: 20px;
+    }
+
+    &.right {
+      margin-left: 20px;
+    }
+  }
   &.default {
     background-color: $color-z1;
     &:active {
