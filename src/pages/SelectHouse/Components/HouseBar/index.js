@@ -26,7 +26,7 @@ class HouseBar extends Component {
     } = this.props;
 
     return (
-      <View class="house-bar" onClick={onHouseTap} style={styles}>
+      <View class="house-bar" onClick={onHouseTap} style={{ borderBottom: '1rpx solid #eaeaea', ...styles }}>
         <View class="bar-left">
           <View class="project">{data.project_name}</View>
           <View class="house">{data.subName}</View>
