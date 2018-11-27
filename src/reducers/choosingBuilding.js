@@ -19,7 +19,6 @@ export default (state = initialState, action = {}) => {
     case request(GET_BUILDING_BY_PROJECT):
       return {
         ...state,
-
       };
     case success(GET_BUILDING_BY_PROJECT):
       return {

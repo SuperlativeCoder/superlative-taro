@@ -3,7 +3,7 @@ import { View, Image } from '@tarojs/components';
 import { connect } from '@tarojs/redux';
 
 import combineActions from '../../middlewares/combineActions';
-import * as AuthLandingActions from '../../actions/authLanding';
+import * as choosingProjectActions from '../../actions/choosingProject';
 import NavigationBar from '../../components/NavigationBar';
 import HeaderTitle from '../../components/HeaderTitle';
 import GreySpace from '../../components/GreySpace';
@@ -14,13 +14,34 @@ import PopupPage from '../../components/PopupPage';
 import SearchBar from '../../components/SearchBar';
 import IMG_TRANGLE from '../../public/images/st_triangle_default@2x.png';
 import IMG_MUTISELECT from '../../public/images/multiselect_unselected@2x.png';
+import LOADING_STATUS from '../../constants/loadingStatus';
+
+import BMap from '../../libs/bmap-wx.min';
 
 import './index.scss';
 
-@connect(({ counter }) => ({
-  counter,
+const AUTH_TOAST = () => {
+  wx.showToast({
+    title: '请点击右上角 > 关于住这儿 > 右上角设置打开定位权限, 或点击搜索框搜索你的房屋. ',
+    icon: 'none',
+    duration: 3000,
+  });
+};
+
+@connect(({
+  cities,
+  projects,
+  currentCity,
+  currentLocation,
+  loadingStatus,
+}) => ({
+  cities,
+  projects,
+  currentCity,
+  currentLocation,
+  loadingStatus,
 }), combineActions({
-  ...AuthLandingActions,
+  ...choosingProjectActions,
 }))
 class AuthLanding extends Component {
   constructor(props) {
@@ -32,9 +53,62 @@ class AuthLanding extends Component {
       searchValue: '123',
     };
 
-    this.togglePopupShpw = this.togglePopupShpw.bind(this);
+    this.togglePopupShow = this.togglePopupShow.bind(this);
+    this.onSearchBarTap = this.onSearchBarTap.bind(this);
   }
   componentDidMount() {
+    if (this.loadingStatus === LOADING_STATUS.SUCCESS) {
+      return;
+    }
+    const that = this;
+    console.log(this.props, 'this.props');
+    const {
+      getAllCities,
+      changeCurrentCity,
+      setCurrentLocation,
+    } = this.props;
+
+    getAllCities(() => {
+      const bmap = new BMap.BMapWX({
+        ak: '6mKSk4bz4k9RBCMGRUyjil3GGUqXOXy8',
+      });
+      bmap.regeocoding({
+        fail() {
+          AUTH_TOAST();
+        },
+        success(res) {
+          const { result } = res.originalData;
+          const currentCity = result.addressComponent.city;
+          const { location } = result;
+          let isMatched = false;
+          let matchedData;
+          setCurrentLocation(location);
+          console.log(that.props, 'that.props', that.getProjects);
+          const { cities } = that.props;
+          cities && cities.forEach((v) => {
+            if (v.name === currentCity) {
+              isMatched = true;
+              matchedData = v;
+            }
+          })
+          if (isMatched) {
+            changeCurrentCity(matchedData);
+          } else {
+            wx.showToast({
+              title: '当前城市无社区, 请手动选择',
+              icon: 'none',
+            });
+            changeCurrentCity({
+              name: '深圳市',
+              code: '440300',
+            });
+          }
+          that.getProjects();
+        },
+      });
+    }, (err) => {
+
+    });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -45,6 +119,37 @@ class AuthLanding extends Component {
   componentDidShow() {}
 
   componentDidHide() { }
+
+  getProjects() {
+    if (!this.currentLocation) {
+      AUTH_TOAST();
+      return;
+    }
+    wx.showToast({
+      title: '加载中...',
+      icon: 'loading',
+      duration: 15000,
+    })
+    wx.getLocation({
+      success(res) {
+        this.props.getProjectByLocation({
+          longitude: this.currentLocation.lng,
+          latitude: this.currentLocation.lat,
+          page: 200,
+          per_page: 1,
+          ...this.currentCity
+        }, (res) => {
+          wx.hideToast()
+        }, (err) => {
+          wx.showToast({
+            title: err.message || '请求数据失败',
+          })
+        })
+      },
+      fail(err) {
+      }
+    });
+  }
 
   onClick() {
     console.log(111)
@@ -58,9 +163,15 @@ class AuthLanding extends Component {
     console.log(e.detail.value, 'e.detail.value')
   }
 
-  togglePopupShpw() {
+  togglePopupShow() {
     this.setState({
       isPopupShow: !this.state.isPopupShow,
+    });
+  }
+
+  onSearchBarTap() {
+    wx.navigateTo({
+      url: '/pages/SearchProject/index',
     });
   }
 
@@ -75,15 +186,9 @@ class AuthLanding extends Component {
           title="123"
         />
         <HeaderTitle title="选择代缴房屋" />
-        <View class="search-bar-wrapper" onTap="onSearchBarTap">
-          {/* <search-bar
-            :isDisalbed="isSearchBarDisabled"
-            placeholder="搜索社区名称"
-          ></search-bar> */}
+        <View class="search-bar-wrapper" onClick={this.onSearchBarTap}>
+          <SearchBar disable placeholder="搜索社区名称" />
         </View>
-        {/* <grey-space1
-          title="当前城市"
-        ></grey-space1> */}
         <GreySpace title="当前城市" />
         <View class="city">
           <View class="city-name" onTap="onCityChoosing">
@@ -116,7 +221,7 @@ class AuthLanding extends Component {
         />
         <PopupPage
           isPopupShow={isPopupShow}
-          onTogglePopupShow={this.togglePopupShpw}
+          onTogglePopupShow={this.togglePopupShow}
         >
           <View>1111</View>
         </PopupPage>

@@ -1,25 +1,25 @@
 import { STATUS_REQUEST, STATUS_SUCCESS, STATUS_FAILURE } from '../constants';
 import { CALL_API } from '../constants/symbols';
+import { encodeSearchParams } from '../utils/url';
 
-export default store => next => (action) => {
+export default () => next => (action) => {
   const callAPI = action[CALL_API];
   if (!callAPI) {
     return next(action);
   }
 
-  const currStore = store.getState();
   const {
     type = '',
     url = '',
     success = () => {},
-    fail = () => {},
+    error = () => {},
     complete = () => {},
-    responseCode = 200,
+    responseCode = 0,
     data = null,
     header = {},
     method = 'GET',
   } = callAPI;
-
+  let urlFormated = url;
   function actionWith(otherData) {
     return Object.assign({}, action, otherData);
   }
@@ -28,27 +28,35 @@ export default store => next => (action) => {
     throw new Error('Specify a string endpoint URL');
   }
 
-  if (method === 'POST' && !Object.keys(data).length) {
+  if (method.toUpperCase() === 'POST' && !Object.keys(data).length) {
     throw new Error('POST must has data param');
+  }
+  if (method.toUpperCase() === 'GET' && data && Object.keys(data).length) {
+    urlFormated = `${url}?${encodeSearchParams(data)}`;
   }
 
   const requestOptions = {
     type,
-    url,
+    url: urlFormated,
     responseCode,
     data,
     header,
     method,
     success(res) {
       if (type) {
-        next(actionWith({
-          type: `${type}_${STATUS_SUCCESS}`,
-          payload: res.data,
-        }));
-      }
-      // 处理直接点击的情况
-      if (typeof success === 'function') {
-        success();
+        if (res.data.code === responseCode) {
+          next(actionWith({
+            type: `${type}_${STATUS_SUCCESS}`,
+            payload: res.data.result,
+          }));
+          success(res.data.result);
+        } else {
+          next(actionWith({
+            type: `${type}_${STATUS_FAILURE}`,
+            payload: res.data.result,
+          }));
+          error(res.data);
+        }
       }
     },
     fail(err) {
@@ -58,18 +66,16 @@ export default store => next => (action) => {
           payload: err,
         }));
       }
-      if (typeof fail === 'function') {
-        fail();
-      }
+      error(err.data);
     },
-    complete() {
-      complete();
+    complete(res) {
+      complete(res.data);
     },
   };
 
-  // TODO: get token logic?
-  if (currStore.user && currStore.user.token) {
-    requestOptions.header.authorization = `Bearer ${currStore.user.token}`;
+  const token = wx.getStorageSync('token');
+  if (token.ticket) {
+    requestOptions.header.ticket = token.ticket;
   }
 
   if (type) {

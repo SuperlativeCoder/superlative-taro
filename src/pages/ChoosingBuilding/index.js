@@ -5,18 +5,23 @@ import { connect } from '@tarojs/redux';
 // import { add, minus, asyncAdd } from '../../actions/counter';
 import NavigationBar from '../../components/NavigationBar';
 import HeaderTitle from '../../components/HeaderTitle';
+import ListBar from '../../components/ListBar';
 import combineActions from '../../middlewares/combineActions';
-import * as choosingHouseActions from '../../actions/choosingHouse';
+import * as choosingBuildingActions from '../../actions/choosingBuilding';
 
 import './index.scss';
 
 
-@connect(({ houses }) => ({
-  houses,
-}), combineActions({
-  ...choosingHouseActions,
+@connect(({ choosingBuilding }) => {
+  console.log(arguments, choosingBuilding, '111111111')
+  return {
+    // counter,
+    choosingBuilding,
+  }
+}, combineActions({
+  ...choosingBuildingActions,
 }))
-class ChoosingHouse extends Component {
+class ChoosingBuilding extends Component {
   constructor(props) {
     super(props);
 
@@ -37,7 +42,7 @@ class ChoosingHouse extends Component {
     //     wx.hideLoading();
     //   })
     // }
-    this.props.getHouseByBuilding(44010008, (res) => {
+    this.props.getBuildingByProject(44010008, (res) => {
       console.log(res, 'res')
       wx.hideLoading();
     }, (err) => {
@@ -61,19 +66,28 @@ class ChoosingHouse extends Component {
     const {
       projectMsg,
     } = this.state;
-
+    const {
+      buildings,
+    } = this.props.choosingBuilding;
+    console.log(buildings, this.props, 'buildings')
     return (
       <View className="choosing-house">
         <View class="choosing-house">
           <NavigationBar />
           <HeaderTitle title="选择代缴房屋" subTitle={projectMsg} />
-          {/* <bar-list
-            :listData.sync="houses"
-          ></bar-list> */}
+          {
+            buildings && buildings.length ? (
+              buildings.map((v) => {
+                console.log(v, 'v')
+                return <ListBar name={v.name} />
+              })
+            ) : ''
+          }
+          <ListBar name='111' />
         </View>
       </View>
     );
   }
 }
 
-export default ChoosingHouse;
+export default ChoosingBuilding;

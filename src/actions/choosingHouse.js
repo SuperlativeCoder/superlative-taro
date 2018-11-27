@@ -8,7 +8,7 @@ import { CALL_API } from '../constants/symbols';
 export function getHouseByBuilding(data, success, error) {
   return {
     [CALL_API]: {
-      url: `${env.FD_HOST_RELEASE}/api/zhuzher/projects/buildings/${data}/houses`,
+      url: `${env.FD_HOST_TEST}/api/zhuzher/projects/buildings/${data}/houses`,
       type: GET_HOUSE_BY_BUILDING,
       success,
       error,
