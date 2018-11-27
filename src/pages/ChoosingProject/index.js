@@ -11,6 +11,7 @@ import CustomButton from '../../components/CustomButton';
 import EmptyPage from '../../components/EmptyPage';
 import InputItem from '../../components/InputItem';
 import PopupPage from '../../components/PopupPage';
+import SearchBar from '../../components/SearchBar';
 import IMG_TRANGLE from '../../public/images/st_triangle_default@2x.png';
 import IMG_MUTISELECT from '../../public/images/multiselect_unselected@2x.png';
 
@@ -28,6 +29,7 @@ class AuthLanding extends Component {
     this.state = {
       inputValue: '',
       isPopupShow: true,
+      searchValue: '123',
     };
 
     this.togglePopupShpw = this.togglePopupShpw.bind(this);
@@ -52,6 +54,10 @@ class AuthLanding extends Component {
     console.log(e.detail.value, 'e');
   }
 
+  onSearchBarInput(e) {
+    console.log(e.detail.value, 'e.detail.value')
+  }
+
   togglePopupShpw() {
     this.setState({
       isPopupShow: !this.state.isPopupShow,
@@ -61,6 +67,7 @@ class AuthLanding extends Component {
   render() {
     const {
       isPopupShow,
+      searchValue,
     } = this.state;
     return (
       <View class="choosing-project">
@@ -101,6 +108,11 @@ class AuthLanding extends Component {
         <InputItem
           onInput={this.onInput}
           title="123"
+        />
+        <SearchBar
+        
+          value={searchValue}
+          onInput={this.onSearchBarInput}
         />
         <PopupPage
           isPopupShow={isPopupShow}
