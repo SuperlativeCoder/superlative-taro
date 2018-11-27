@@ -15,7 +15,6 @@ import IMG_TRANGLE from '../../public/images/st_triangle_default@2x.png';
 import IMG_MUTISELECT from '../../public/images/multiselect_unselected@2x.png';
 
 import './index.scss';
-import Dialog from './dialog';
 
 @connect(({ counter }) => ({
   counter,
@@ -109,11 +108,6 @@ class AuthLanding extends Component {
         >
           <View>1111</View>
         </PopupPage>
-        <Dialog>
-          <View className="dialog-message">
-            Thank you for using Taro.
-          </View>
-        </Dialog>
         {/* <grey-space2
           title="全部社区"
         ></grey-space2>

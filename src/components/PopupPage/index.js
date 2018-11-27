@@ -12,7 +12,7 @@ const propTypes = {
   title: PropTypes.string,
   subTitle: PropTypes.string,
   styles: PropTypes.shape({}),
-  // children: PropTypes.func,
+  children: PropTypes.func,
   isTitleShow: PropTypes.bool,
   isPopupShow: PropTypes.bool,
   onTogglePopupShow: PropTypes.func,
@@ -22,7 +22,7 @@ const defaultProps = {
   title: '',
   subTitle: '',
   styles: {},
-  // children: () => {},
+  children: () => {},
   isTitleShow: true,
   isPopupShow: true,
   onTogglePopupShow: () => {},
@@ -51,7 +51,6 @@ class PopupPage extends Component {
       title,
       subTitle,
       styles,
-      children,
       isTitleShow,
       isPopupShow,
       onTogglePopupShow,
@@ -82,7 +81,7 @@ class PopupPage extends Component {
           isTitleShow && <HeaderTitle title={title} subTitle={subTitle} />
         }
         <View class="popup-page-content">
-          { children }
+          { this.props.children }
         </View>
       </View>
     );
