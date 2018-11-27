@@ -10,6 +10,7 @@ import HeaderTitle from '../../components/HeaderTitle';
 import CustomButton from '../../components/CustomButton';
 import ICON_ADD_BLACK from '../../public/images/topbar_add_black@2x.png';
 import LOADING_STATUS from '../../constants/loadingStatus';
+import { HOUSE_DATA } from '../../constants/localStorage';
 import HouseBar from './Components/HouseBar';
 import './index.scss';
 
@@ -59,6 +60,23 @@ class AuthLanding extends Component {
     })
   }
 
+  onHouseTap(i) {
+    const houseData = wx.getStorageSync(HOUSE_DATA);
+    if (houseData) {
+      wx.setStorageSync(HOUSE_DATA, {
+        ...wx.getStorageSync(HOUSE_DATA),
+        house: this.props.selectHouse.houses[i],
+      });
+    } else {
+      wx.setStorageSync(HOUSE_DATA, {
+        house: this.props.selectHouse.houses[i],
+      });
+    }
+    wx.navigateTo({
+      url: '/pages/ConfirmBill/index',
+    });
+  }
+
   render() {
     const {
       houses,
@@ -68,22 +86,15 @@ class AuthLanding extends Component {
     return (
       <View class="select-house">
         <NavigationBar />
-        <HeaderTitle title="选择房屋账单" />
+        <HeaderTitle title="选择房屋账单" styles={{ backgroundColor: '#fff' }} />
         <View class="notice-bar">
           <View class="content">
             你的账户下有如下房屋账单，请选择要缴费的房屋
           </View>
         </View>
         <View class="house-list">
-          {/* <house-bar
-            :houseData.sync="houses"
-          /> */}
           {
-            houses && houses.length ? houses.map((v) => {
-              return (
-                <HouseBar data={v} />
-              );
-            }) : ""
+            houses && houses.length ? houses.map((v, i) => <HouseBar data={v} onHouseTap={this.onHouseTap.bind(this, i)} />) : ''
           }
         </View>
         <View class="other-house" onClick={this.onAddHouseTap}>

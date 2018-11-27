@@ -95,8 +95,7 @@ class PayBill extends Component {
     return (
       <View className="pay-bill">
         <NavigationBar
-          isNavigateBarHidden={isNavigateBarHidden}
-          navigationBarBg="rgb(178, 149, 116)"
+          styles={{ backgroundColor: 'rgb(178,149,116)' }}
         />
         <View className="title" style={{}}>
           <HeaderTitle title="账单代缴" subTitle="当前房屋账单：金域华府1栋2单元B209" color="#fff" />

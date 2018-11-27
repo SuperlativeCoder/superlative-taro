@@ -104,7 +104,7 @@ class NavigationBar extends Component {
     const totalHeight = `-${height + paddingTop}rpx`;
 
     return (
-      <View class="navigation-bar-wrapper" style={styles}>
+      <View class="navigation-bar-wrapper">
         <View
           class="navigation-bar"
           style={{
@@ -113,6 +113,7 @@ class NavigationBar extends Component {
             lineHeight: `${height}rpx`,
             position: isFixed && 'fixed',
             transform: `translateY(${isShow ? '0' : totalHeight})`,
+            ...styles,
           }}
         >
           {
