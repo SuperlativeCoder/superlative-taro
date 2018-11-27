@@ -1,0 +1,23 @@
+
+@import '../../public/styles/index.scss';
+
+.list-bar-wrapper {
+  box-sizing: border-box;
+  padding-left: 40rpx;
+  .list-bar {
+    @include flex-between;
+    height: 112rpx;
+    border-bottom: 1rpx solid $color-f4;
+    .image {
+      padding-right: 40rpx;
+      image {
+        width: 30rpx;
+        height: 30rpx;
+      }
+    }
+  
+    .content {
+      font-size: 32rpx;
+    }
+  }
+}

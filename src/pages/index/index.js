@@ -8,8 +8,7 @@ import NavigationBar from '../../components/NavigationBar';
 import './index.scss';
 
 
-@connect(({ counter }) => ({
-  counter,
+@connect(({  }) => ({
 }), dispatch => ({
   // add() {
   //   dispatch(add());
@@ -22,6 +21,12 @@ import './index.scss';
   // },
 }))
 class Index extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+    };
+  }
   componentDidMount() {
   }
 
@@ -35,10 +40,6 @@ class Index extends Component {
   componentDidHide() { }
 
   config = {
-    navigationBarTitleText: '首页1111',
-    window: {
-      navigationStyle: 'custom',
-    },
   }
 
   render() {

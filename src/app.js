@@ -25,6 +25,7 @@ class App extends Component {
     pages: [
       'pages/ConfirmBill/index',
       'pages/AuthLanding/index',
+      'pages/ChoosingHouse/index',
       'pages/ChoosingProject/index',
       'pages/index/index',
     ],
