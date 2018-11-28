@@ -31,7 +31,6 @@ class App extends Component {
       'pages/SelectHouse/index',
       'pages/SearchProject/index',
       'pages/ValidateHouse/index',
-      'pages/index/index',
     ],
     window: {
       backgroundTextStyle: 'light',

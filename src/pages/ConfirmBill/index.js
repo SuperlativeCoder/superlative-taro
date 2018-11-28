@@ -11,7 +11,7 @@ import HeaderTitle from '../../components/HeaderTitle';
 import CustomButton from '../../components/CustomButton';
 import EmptyPage from '../../components/EmptyPage';
 import { isIOS, STATUSBAR_HEIGHT, ANDROID_NAVBAR_HEIGHT, IOS_NAVBAR_HEIGHT } from '../../constants/weapp';
-import { HOUSE_DATA, AUTH } from '../../constants/localStorage';
+import { HOUSE_DATA } from '../../constants/localStorage';
 import BillYearList from './components/BillYearList';
 import './index.scss';
 

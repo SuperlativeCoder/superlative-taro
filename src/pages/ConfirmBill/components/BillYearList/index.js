@@ -25,7 +25,16 @@ class BillYearList extends Component {
       <View className="bill-year-list">
         <View className="title">{year}年</View>
         {
-          billData && billData.map((v, i) => <BillMonthList data={v} currentIndex={i} onToggleCheckBoxShow={onToggleCheckBoxShow} currentParentIndex={currentParentIndex} key={i} noUnderline={billData.length - 1 === i} />)
+          billData && billData.map((v, i) => (
+            <BillMonthList
+              data={v}
+              currentIndex={i}
+              onToggleCheckBoxShow={onToggleCheckBoxShow}
+              currentParentIndex={currentParentIndex}
+              key={i}
+              noUnderline={billData.length - 1 === i}
+            />
+          ))
         }
       </View>
     );

@@ -1,11 +1,8 @@
 import Taro, { Component } from '@tarojs/taro';
-import { View, Image } from '@tarojs/components';
+import { View } from '@tarojs/components';
 import PropTypes from 'prop-types';
 
 import './index.scss';
-
-const ICON_SELECT = require('../../public/images/select.svg');
-const ICON_UNSELECT = require('../../public/images/unselect.svg');
 
 const propTypes = {
   title: PropTypes.string,

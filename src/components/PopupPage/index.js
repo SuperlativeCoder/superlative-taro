@@ -35,15 +35,8 @@ class PopupPage extends Component {
     this.state = {
       height: isIOS ? IOS_NAVBAR_HEIGHT : ANDROID_NAVBAR_HEIGHT,
       paddingTop: STATUSBAR_HEIGHT,
-      // isPopupShow: false,
     };
   }
-
-  // onTogglePopupShow() {
-  //   this.setState({
-  //     isPopupShow: !this.state.isPopupShow,
-  //   });
-  // }
 
   render() {
     const { height, paddingTop } = this.state;
