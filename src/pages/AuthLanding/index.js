@@ -6,7 +6,6 @@ import PropTypes from 'prop-types';
 import combineActions from '../../middlewares/combineActions';
 import * as authLandingActions from '../../actions/authLanding';
 import * as selectHouseActions from '../../actions/selectHouse';
-// import NavigationBar from '../../components/NavigationBar';
 import IMG_INTRO from '../../public/images/miniapp_bill_intro.svg';
 
 import './index.scss';

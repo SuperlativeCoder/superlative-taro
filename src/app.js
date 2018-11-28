@@ -1,8 +1,12 @@
 import '@tarojs/async-await';
 import Taro, { Component } from '@tarojs/taro';
-import { Provider } from '@tarojs/redux';
+import { Provider, connect } from '@tarojs/redux';
+import PropTypes from 'prop-types';
 
 import Index from './pages/ConfirmBill';
+import * as selectHouseActions from './actions/selectHouse';
+import * as authLandingActions from './actions/authLanding';
+import combineActions from './middlewares/combineActions';
 
 import configStore from './store';
 
@@ -10,8 +14,50 @@ import './app.scss';
 
 const store = configStore();
 
+const propTypes = {
+  getBindingHouses: PropTypes.func.isRequired,
+  getUserDataByCode: PropTypes.func.isRequired,
+};
+
+@connect(({ authLanding }) => ({
+  authLanding,
+}), combineActions({
+  ...authLandingActions,
+  ...selectHouseActions,
+}))
 class App extends Component {
-  componentDidMount() {}
+  async componentWillMount() {
+    const token = wx.getStorageSync('token');
+    if (!token.ticket) {
+      wx.reLaunch({
+        url: '/pages/AuthLanding/index',
+      });
+    } else {
+      await new Promise((resolve, reject) => {
+        this.props.getBindingHouses((res) => {
+          resolve(res);
+        }, (err) => {
+          if (err.code === 400) {
+            const that = this;
+            wx.login({
+              success(res) {
+                if (res.code) {
+                  that.props.getUserDataByCode(res.code, (resSuccess) => {
+                    if (resSuccess.ticket) {
+                      wx.setStorageSync('token', resSuccess);
+                      resolve(res);
+                    }
+                  });
+                }
+              },
+            });
+          } else {
+            reject();
+          }
+        });
+      });
+    }
+  }
 
   componentDidShow() {}
 
@@ -49,9 +95,6 @@ class App extends Component {
     ],
   }
 
-
-  // 在 App 类中的 render() 函数没有实际作用
-  // 请勿修改此函数
   render() {
     return (
       <Provider store={store}>
@@ -60,5 +103,7 @@ class App extends Component {
     );
   }
 }
+
+App.propTypes = propTypes;
 
 Taro.render(<App />, document.getElementById('app'));
