@@ -79,7 +79,7 @@ class SelectHouse extends Component {
     const {
       houses,
     } = this.props.selectHouse;
-    console.log(houses, 'houses');
+
     return (
       <View class="select-house">
         <NavigationBar />
