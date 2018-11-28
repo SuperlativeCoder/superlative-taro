@@ -98,8 +98,8 @@ class NavigationBar extends Component {
     const {
       isShow,
       isFixed,
-      styles,
       title,
+      styles,
     } = this.props;
     const totalHeight = `-${height + paddingTop}rpx`;
 

@@ -1,33 +1,37 @@
 @import '../../public/styles/index.scss';
 
-$brown: rgb(178, 149, 116);
-
-.pay-bill {
-  min-height: 100vh;
+.confirm-bill {
+  min-height: 100%;
   background-color: $color-f5;
-  .title {
+  .confirm-bill-title {
     display: flex;
-    position: relative;
+    position: fixed;
     align-items: center;
     height: 180rpx;
-    background-color: $brown;
-    .capsule {
-      display: flex;
-      justify-content: center;
-      align-items: center;
+    width: 100%;
+    top: 0;
+    left: 0;
+    background-color: rgb(178,149,116);
+    .other-house {
+      @include flex-center;
       position: absolute;
       right: 16rpx;
-      top: 48rpx;
+      bottom: 80rpx;
       width: 232rpx;
       height: 56rpx;
       border-radius: 56rpx;
       background-color: #fff;
       color: rgb(118, 92, 61);
       font-size: 28rpx;
+
+      image {
+        width: 30rpx;
+        height: 30rpx;
+      }
     }
   }
 
-  .pay-bill-bottom {
+  .confirm-bill-bottom {
     position: fixed;
     display: flex;
     align-items: center;
@@ -47,5 +51,27 @@ $brown: rgb(178, 149, 116);
         font-weight: bold;
       }
     }
+
+    &.unactive {
+      background-color: $color-f4;
+
+      .custom-button {
+        background-color: $color-f3;
+        &:active {
+          background-color: $color-f3
+        }
+      }
+    }
+  }
+
+  .bill-list-wrapper {
+    box-sizing: border-box;
+    min-height: 100vh;
+    padding-bottom: 144rpx;
+  }
+  .empty {
+    box-sizing: border-box;
+    padding-bottom: 144rpx;
+    height: 90%;
   }
 }

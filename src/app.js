@@ -40,6 +40,14 @@ class App extends Component {
       navigationBarTextStyle: 'black',
       navigationStyle: 'custom',
     },
+    // 网络超时时间最大15s
+    networkTimeout: {
+      request: 15000,
+    },
+    navigateToMiniProgramAppIdList: [
+      'wx71ca0b0d2d6fdab6',
+      'wxe0f6c61fa1c120d5',
+    ],
   }
 
 

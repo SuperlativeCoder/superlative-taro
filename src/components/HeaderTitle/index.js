@@ -8,12 +8,14 @@ const propTypes = {
   title: PropTypes.string,
   subTitle: PropTypes.string,
   styles: PropTypes.shape({}),
+  children: PropTypes.func,
 };
 
 const defaultProps = {
   title: '',
   subTitle: '',
   styles: {},
+  children: () => {},
 };
 
 class HeaderTitle extends Component {
@@ -24,6 +26,7 @@ class HeaderTitle extends Component {
       <View className="header-title" style={styles}>
         <View className="header-title-base">{title}</View>
         <View className="header-title-sub">{subTitle}</View>
+        { this.props.children }
       </View>
     );
   }
