@@ -35,7 +35,6 @@ class CustomButton extends Component {
       styles,
       onClick,
     } = this.props;
-    console.log(styles, 'style');
 
     return (
       <View

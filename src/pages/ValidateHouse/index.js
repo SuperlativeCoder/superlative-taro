@@ -16,10 +16,7 @@ import ICON_INTRO from '../../public/images/miniapp_bill_intro.svg';
 import './index.scss';
 
 const propTypes = {
-  getBuildingByProject: PropTypes.func.isRequired,
-  validateHouse: PropTypes.shape({
-    buildings: PropTypes.array.isRequired,
-  }).isRequired,
+  checkHouseCode: PropTypes.func.isRequired,
 };
 
 @connect(({ validateHouse }) => ({
@@ -33,54 +30,65 @@ class ValidateHouse extends Component {
 
     this.state = {
       projectMsg: '',
+      inputValue: '',
     };
+
+    this.onInput = this.onInput.bind(this);
   }
 
-  componentDidMount() {
-    const { project } = wx.getStorageSync(HOUSE_DATA);
-    this.props.getBuildingByProject(project.code, () => {
-      wx.hideLoading();
+  componentWillMount() {
+    const houseData = wx.getStorageSync(HOUSE_DATA);
+    const { house } = houseData;
+    if (house) {
+      this.setState({
+        projectMsg: house.name,
+      });
+    }
+  }
+
+  onValidateHouse() {
+    const houseCode = wx.getStorageSync(HOUSE_DATA).house.code;
+    const { inputValue } = this.state;
+    this.props.checkHouseCode(inputValue, houseCode, () => {
+      wx.navigateTo({
+        url: '/pages/ConfirmBill/index',
+      });
     }, (err) => {
       wx.showToast({
-        title: err.message || '获取房屋信息失败',
+        title: err.data || '房屋编码错误',
         icon: 'none',
       });
-      wx.hideLoading();
     });
   }
 
-  onBuildingClick(i) {
-    const { buildings } = this.props.validateHouse;
-    wx.setStorageSync(HOUSE_DATA, {
-      ...wx.getStorageSync(HOUSE_DATA),
-      building: buildings[i],
-    });
-    wx.navigateTo({
-      url: '/pages/ChoosingHouse/index',
+  onInput(e) {
+    const inputValue = e.detail.value;
+    this.setState({
+      inputValue,
     });
   }
 
   render() {
     const {
       projectMsg,
+      inputValue,
     } = this.state;
-    const {
-      buildings,
-    } = this.props.validateHouse;
+
     return (
       <View class="validate-house">
         <NavigationBar />
         <HeaderTitle
           title="选择代缴房屋"
-          subTitle="projectMsg"
+          subTitle={projectMsg}
+          styles={{ backgroundColor: '#fff' }}
         />
         <GreySpace
           type="middle"
           title="你的微信号已累计查询超过3个房屋，继续查询需输入该房屋对应的房屋编码。"
         />
-        <InputItem title="输入房屋编码" type="idcard" />
-        <View class="button-wrapper" onClick={this.onValidateHouse}>
-          <CustomButton content="添加" />
+        <InputItem value={inputValue} onInput={this.onInput} title="输入房屋编码" type="idcard" />
+        <View class="button-wrapper">
+          <CustomButton title="添加" onClick={this.onValidateHouse} />
         </View>
         <View class="warnings">
           <View class="title">我的房屋编码在哪里？</View>
