@@ -5,14 +5,16 @@ import { connect } from '@tarojs/redux';
 // import { add, minus, asyncAdd } from '../../actions/counter';
 import NavigationBar from '../../components/NavigationBar';
 import HeaderTitle from '../../components/HeaderTitle';
+import ListBar from '../../components/ListBar';
 import combineActions from '../../middlewares/combineActions';
 import * as choosingHouseActions from '../../actions/choosingHouse';
+import { HOUSE_DATA } from '../../constants/localStorage';
 
 import './index.scss';
 
 
-@connect(({ houses }) => ({
-  houses,
+@connect(({ choosingHouse }) => ({
+  choosingHouse,
 }), combineActions({
   ...choosingHouseActions,
 }))
@@ -37,12 +39,15 @@ class ChoosingHouse extends Component {
     //     wx.hideLoading();
     //   })
     // }
-    this.props.getHouseByBuilding(44010008, (res) => {
-      console.log(res, 'res')
-      wx.hideLoading();
-    }, (err) => {
-      wx.hideLoading();
-    })
+    const { building } = wx.getStorageSync(HOUSE_DATA)
+    if (building) {
+      this.props.getHouseByBuilding(building.code, (res) => {
+        console.log(res, 'res')
+        wx.hideLoading();
+      }, (err) => {
+        wx.hideLoading();
+      })
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -57,19 +62,47 @@ class ChoosingHouse extends Component {
   config = {
   }
 
+  onHouseClick(i) {
+    const {
+      houses,
+    } = this.props.choosingHouse;
+    this.props.bindingHouseByHouseCode(houses[i].code, (res) => {
+      wx.setStorageSync(HOUSE_DATA, {
+        ...wx.getStorageSync(HOUSE_DATA),
+        house: houses[i]
+      })
+      wx.navigateTo({
+        url: '/pages/ConfirmBill/index'
+      })
+    }, (err) => {
+      if (err && err.code === 400) {
+        wx.setStorageSync(HOUSE_DATA, {
+          ...wx.getStorageSync(HOUSE_DATA),
+          house: houses[i]
+        })
+        wx.navigateTo({
+          url: '/pages/ValidateHouse/index'
+        })
+      }
+    })
+  }
+
   render() {
     const {
       projectMsg,
     } = this.state;
+    const {
+      houses,
+    } = this.props.choosingHouse;
 
     return (
       <View className="choosing-house">
         <View class="choosing-house">
           <NavigationBar />
           <HeaderTitle title="选择代缴房屋" subTitle={projectMsg} />
-          {/* <bar-list
-            :listData.sync="houses"
-          ></bar-list> */}
+          {
+            houses && houses.length ? houses.map((v, i) => <ListBar name={v.name} onClick={this.onHouseClick.bind(this, i)} />) : ''
+          }
         </View>
       </View>
     );
