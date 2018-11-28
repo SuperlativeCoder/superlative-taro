@@ -38,8 +38,7 @@ class CustomButton extends Component {
 
     return (
       <View
-        className={`custom-button ${type}`}
-        disabled={disabled}
+        className={`custom-button ${type} ${disabled ? 'disabled' : ''}`}
         style={styles}
         onClick={onClick}
       >

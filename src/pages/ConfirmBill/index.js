@@ -11,45 +11,34 @@ import HeaderTitle from '../../components/HeaderTitle';
 import CustomButton from '../../components/CustomButton';
 import EmptyPage from '../../components/EmptyPage';
 import { isIOS, STATUSBAR_HEIGHT, ANDROID_NAVBAR_HEIGHT, IOS_NAVBAR_HEIGHT } from '../../constants/weapp';
-import { HOUSE_DATA } from '../../constants/localStorage';
+import { HOUSE_DATA, AUTH } from '../../constants/localStorage';
 import BillYearList from './components/BillYearList';
 import './index.scss';
 
 import ICON_YELLOW_RIGHT from '../../public/images/arrow_shityellow_right.svg';
-import ICON_ARROW from '../../public/images/arrow_grey_right.svg';
 
 const COLOR_GREY = 'rgb(178,149,116)';
 
 const propTypes = {
-  // add: PropTypes.func,
-  // minus: PropTypes.func,
-  // asyncAdd: PropTypes.func,
   getUserBillData: PropTypes.func,
-  toggleCheckBoxShow: PropTypes.func,
-  // counter: PropTypes.shape({
-  //   num: PropTypes.number,
-  // }),
+  toggleCheckStatus: PropTypes.func,
   confirmBill: PropTypes.shape({
-    totalCharge: PropTypes.number,
+    extraData: PropTypes.shape({}),
+    totalCharge: PropTypes.string,
+    billList: PropTypes.array,
   }),
 };
 
 const defaultProps = {
-  // add: () => {},
-  // minus: () => {},
-  // asyncAdd: () => {},
   getUserBillData: () => {},
-  toggleCheckBoxShow: () => {},
-  // counter: {},
+  toggleCheckStatus: () => {},
   confirmBill: {},
 };
 
 
 @connect(({ confirmBill }) => ({
-  // counter,
   confirmBill,
 }), combineActions({
-  // ...counterActions,
   ...confirmBillActions,
 }))
 
@@ -99,15 +88,51 @@ class confirmBill extends Component {
     });
   }
 
+  toggleCheckBoxShow(data) {
+    const { currentParentIndex: index, currentIndex: subIndex, curChecked } = data;
+    const { billList } = this.props.confirmBill;
+    const isChecked = curChecked;
+    const canCancelIndex = this.checkIfLastIndex(billList, isChecked);
+    if (canCancelIndex[0] === index && canCancelIndex[1] === subIndex) {
+      this.props.toggleCheckStatus({
+        index,
+        subIndex,
+      });
+    } else {
+      wx.showToast({
+        title: '仅可选择/取消连续月账单',
+        icon: 'none',
+      });
+    }
+  }
+
+  checkIfLastIndex(data, isChecked) {
+    let indexArrCached;
+    if (data && data.length) {
+      for (let i = 0; i < data.length; i += 1) {
+        const billData = data[i].billData || [];
+        for (let j = 0; j < billData.length; j += 1) {
+          if (billData[j].isChecked === true && isChecked) {
+            return [i, j];
+          } else if (billData[j].isChecked === true && !isChecked) {
+            return indexArrCached;
+          } else {
+            indexArrCached = [i, j];
+          }
+        }
+      }
+      return [data.length - 1, data[data.length - 1].billData.length - 1];
+    }
+  }
+
   render() {
     const { navigationHeight, projectMsg } = this.state;
     const {
       billList,
       totalCharge,
+      extraData,
     } = this.props.confirmBill;
-    console.log(navigationHeight, 'navigationHeight', `${navigationHeight}rpx`)
-
-    const isTotalChargeZero = !this.totalCharge || this.totalCharge === '0.00';
+    const isTotalChargeZero = !totalCharge || totalCharge === '0.00';
 
     return (
       <View class="confirm-bill">
@@ -127,9 +152,9 @@ class confirmBill extends Component {
         {
           billList && billList.length ? (
             <View class="bill-list-wrapper" style={{ paddingTop: `${navigationHeight}rpx` }}>
-              {/* {
-                billList.map((v, i) => <BillYearList data={v} key={i} toggleCheckBoxShow={toggleCheckBoxShow} currentParentIndex={i} />)
-              } */}
+              {
+                billList.map((v, i) => <BillYearList data={v} key={i} onToggleCheckBoxShow={this.toggleCheckBoxShow} currentParentIndex={i} />)
+              }
             </View>
           ) : (
             <View class="empty" style={{ paddingTop: `${navigationHeight + 180}rpx` }}>
@@ -145,7 +170,7 @@ class confirmBill extends Component {
               <View class="bill-total">
                 实付金额：<Text class="bill">¥{totalCharge}</Text>
               </View>
-              <Navigator target="miniProgram" openType="navigate" appId="wxe0f6c61fa1c120d5" path="" extraData="{{extraData}}" version="trial">
+              <Navigator target="miniProgram" openType="navigate" appId="wxe0f6c61fa1c120d5" path="" extraData={extraData} version="trial">
                 <CustomButton
                   title="立即缴费"
                   styles={{ width: '288rpx', height: '96rpx' }}
@@ -163,6 +188,7 @@ class confirmBill extends Component {
               <CustomButton
                 title="立即缴费"
                 styles={{ width: '288rpx', height: '96rpx' }}
+                disabled={isTotalChargeZero}
               />
             </View>
           )

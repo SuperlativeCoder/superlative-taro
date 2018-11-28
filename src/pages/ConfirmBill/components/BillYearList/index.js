@@ -8,24 +8,24 @@ import './index.scss';
 const propTypes = {
   data: PropTypes.shape({}),
   currentParentIndex: PropTypes.number,
-  toggleCheckBoxShow: PropTypes.func,
+  onToggleCheckBoxShow: PropTypes.func,
 };
 
 const defaultProps = {
   data: {},
   currentParentIndex: -1,
-  toggleCheckBoxShow: () => {},
+  onToggleCheckBoxShow: () => {},
 };
 
 class BillYearList extends Component {
   render() {
-    const { data: { year, testData }, currentParentIndex, toggleCheckBoxShow } = this.props;
+    const { data: { year, billData }, currentParentIndex, onToggleCheckBoxShow } = this.props;
 
     return (
       <View className="bill-year-list">
         <View className="title">{year}年</View>
         {
-          testData.map((v, i) => <BillMonthList data={v} currentIndex={i} toggleCheckBoxShow={toggleCheckBoxShow} currentParentIndex={currentParentIndex} key={i} noUnderline={testData.length - 1 === i} />)
+          billData && billData.map((v, i) => <BillMonthList data={v} currentIndex={i} onToggleCheckBoxShow={onToggleCheckBoxShow} currentParentIndex={currentParentIndex} key={i} noUnderline={billData.length - 1 === i} />)
         }
       </View>
     );

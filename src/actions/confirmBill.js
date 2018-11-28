@@ -17,7 +17,6 @@ export function getUserBillData(houseCode, success, error) {
   return {
     [CALL_API]: {
       url: `${env.FD_HOST_TEST}/nf/v1/bills/simple?house_code=${houseCode}`,
-      // url: `${MOCK_HOST}/app/mock/64/GET//nf/v1/bills/simple`,
       type: GET_USER_BILL_DATA,
       success,
       error,
