@@ -35,6 +35,7 @@ class ChoosingHouse extends Component {
   }
 
   componentDidMount() {
+    wx.showLoading();
     const { building } = wx.getStorageSync(HOUSE_DATA);
     if (building) {
       this.props.getHouseByBuilding(building.code, () => {
@@ -69,6 +70,11 @@ class ChoosingHouse extends Component {
         });
         wx.navigateTo({
           url: '/pages/ValidateHouse/index',
+        });
+      } else {
+        wx.showToast({
+          title: err.message || '绑定房屋失败',
+          icon: 'none',
         });
       }
     });

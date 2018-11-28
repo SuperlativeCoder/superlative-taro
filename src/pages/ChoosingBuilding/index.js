@@ -34,6 +34,7 @@ class ChoosingBuilding extends Component {
   }
 
   componentDidMount() {
+    wx.showLoading();
     const { project } = wx.getStorageSync(HOUSE_DATA);
     this.props.getBuildingByProject(project.code, () => {
       wx.hideLoading();
