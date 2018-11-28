@@ -30,6 +30,7 @@ class App extends Component {
       'pages/ChoosingProject/index',
       'pages/SelectHouse/index',
       'pages/SearchProject/index',
+      'pages/ValidateHouse/index',
       'pages/index/index',
     ],
     window: {
