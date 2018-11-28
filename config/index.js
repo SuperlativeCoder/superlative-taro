@@ -6,7 +6,7 @@ const config = {
   outputRoot: 'dist',
   plugins: {
     babel: {
-      sourceMap: true,
+      sourceMap: false,
       presets: [
         'env'
       ],
