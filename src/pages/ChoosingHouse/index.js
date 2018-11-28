@@ -94,7 +94,7 @@ class ChoosingHouse extends Component {
           <NavigationBar />
           <HeaderTitle title="选择代缴房屋" subTitle={projectMsg} />
           {
-            houses && houses.length ? houses.map((v, i) => <ListBar name={v.name} onClick={this.onHouseClick.bind(this, i)} />) : ''
+            houses && houses.length ? houses.map((v, i) => <ListBar name={v.name} key={i} onClick={this.onHouseClick.bind(this, i)} />) : ''
           }
         </View>
       </View>

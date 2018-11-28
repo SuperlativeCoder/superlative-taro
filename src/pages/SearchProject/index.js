@@ -16,12 +16,12 @@ import ICON_SUCCESS from '../../public/images/result_success@2x.png';
 import './index.scss';
 
 const propTypes = {
-  // bindingHouseByHouseCode: PropTypes.func.isRequired,
-  // getHouseByBuilding: PropTypes.func.isRequired,
+  searchProjects: PropTypes.func.isRequired,
   searchProject: PropTypes.shape({
-    houses: PropTypes.object,
+    projects: PropTypes.array,
   }).isRequired,
 };
+let timer;
 
 @connect(({ searchProject }) => ({
   searchProject,
@@ -38,10 +38,7 @@ class SearchProject extends Component {
     };
 
     this.onDeleteTap = this.onDeleteTap.bind(this);
-  }
-
-  componentDidMount() {
-    
+    this.onSearchBarInput = this.onSearchBarInput.bind(this);
   }
 
   onDeleteTap() {
@@ -54,20 +51,70 @@ class SearchProject extends Component {
     wx.navigateBack();
   }
 
+  onSearchBarInput(e) {
+    const inputValue = e.detail.value;
+
+    this.setState({
+      inputValue,
+    }, () => {
+      if (timer) {
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+          this.projectsSearcher(inputValue);
+        }, 250);
+      } else {
+        this.setState({
+          status: 'loading',
+        });
+        timer = setTimeout(() => {
+          this.projectsSearcher(inputValue);
+        }, 250);
+      }
+    });
+  }
+
+  onListBarClick(i) {
+    const {
+      projects,
+    } = this.props.searchProject;
+    wx.setStorageSync(HOUSE_DATA, {
+      ...wx.getStorageSync(HOUSE_DATA),
+      project: projects[i],
+    });
+    wx.navigateTo({
+      url: '/pages/ChoosingBuilding/index',
+    });
+  }
+
+  projectsSearcher(inputValue) {
+    this.props.searchProjects(inputValue, (res) => {
+      this.setState({
+        status: res.length ? 'success' : 'empty',
+      });
+    }, (err) => {
+      wx.showToast({
+        title: err.message || '请求数据错误',
+        icon: 'none',
+      });
+    });
+  }
+
   render() {
     const {
       inputValue,
       status,
     } = this.state;
     const {
-      houses,
+      projects,
     } = this.props.searchProject;
 
     return (
       <View class="search-project">
         <NavigationBar />
         <View class="search-bar-out-wrapper">
-          <SearchBar />
+          <View class="bar">
+            <SearchBar value={inputValue} onInput={this.onSearchBarInput} />
+          </View>
           {
             inputValue ? (
               <View class="delete" onClick={this.onDeleteTap}>
@@ -91,9 +138,7 @@ class SearchProject extends Component {
             )
           }
           {
-            status === 'success' && (
-              <ListBar name="111" />
-            )
+            status === 'success' && projects.map((v, i) => <ListBar name={v.name} key={i} onClick={this.onListBarClick.bind(this, i)} />)
           }
         </View>
       </View>

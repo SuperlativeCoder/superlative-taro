@@ -72,7 +72,7 @@ class ChoosingBuilding extends Component {
           <HeaderTitle title="选择代缴房屋" subTitle={projectMsg} />
           {
             buildings && buildings.length ? (
-              buildings.map((v, i) => <ListBar name={v.name} onClick={this.onBuildingClick.bind(this, i)} />)
+              buildings.map((v, i) => <ListBar name={v.name} key={i} onClick={this.onBuildingClick.bind(this, i)} />)
             ) : ''
           }
         </View>

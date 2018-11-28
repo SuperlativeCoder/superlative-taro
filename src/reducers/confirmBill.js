@@ -56,13 +56,6 @@ function billListDataFormatter(state, payload) {
       });
     }
   }
-  console.log({
-    endDate,
-    houseCode,
-    houseName,
-    totalCharge,
-    ticket,
-  }, '12312312321')
   return {
     ...state,
     hisCharge: payload.his_charge,

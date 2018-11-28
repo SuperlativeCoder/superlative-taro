@@ -9,6 +9,10 @@
     padding: 20rpx 0;
     position: relative;
 
+    .bar {
+      flex: 1;
+    }
+
     .cancel {
       flex: 0 0 96rpx;
       font-size: 28rpx;

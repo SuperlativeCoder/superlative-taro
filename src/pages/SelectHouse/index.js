@@ -91,7 +91,7 @@ class SelectHouse extends Component {
         </View>
         <View class="house-list">
           {
-            houses && houses.length ? houses.map((v, i) => <HouseBar data={v} onHouseTap={this.onHouseTap.bind(this, i)} />) : ''
+            houses && houses.length ? houses.map((v, i) => <HouseBar data={v} key={i} onHouseTap={this.onHouseTap.bind(this, i)} />) : ''
           }
         </View>
         <View class="other-house" onClick={this.onAddHouseTap}>
