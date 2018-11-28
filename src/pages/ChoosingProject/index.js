@@ -12,9 +12,11 @@ import EmptyPage from '../../components/EmptyPage';
 import InputItem from '../../components/InputItem';
 import PopupPage from '../../components/PopupPage';
 import SearchBar from '../../components/SearchBar';
+import ListBar from '../../components/ListBar';
 import IMG_TRANGLE from '../../public/images/st_triangle_default@2x.png';
 import IMG_MUTISELECT from '../../public/images/multiselect_unselected@2x.png';
 import LOADING_STATUS from '../../constants/loadingStatus';
+import { HOUSE_DATA } from '../../constants/localStorage';
 
 import BMap from '../../libs/bmap-wx.min';
 
@@ -29,17 +31,9 @@ const AUTH_TOAST = () => {
 };
 
 @connect(({
-  cities,
-  projects,
-  currentCity,
-  currentLocation,
-  loadingStatus,
+  choosingProject,
 }) => ({
-  cities,
-  projects,
-  currentCity,
-  currentLocation,
-  loadingStatus,
+  choosingProject,
 }), combineActions({
   ...choosingProjectActions,
 }))
@@ -49,12 +43,13 @@ class AuthLanding extends Component {
 
     this.state = {
       inputValue: '',
-      isPopupShow: true,
+      isPopupShow: false,
       searchValue: '123',
     };
 
     this.togglePopupShow = this.togglePopupShow.bind(this);
     this.onSearchBarTap = this.onSearchBarTap.bind(this);
+    this.onCityChoosing = this.onCityChoosing.bind(this);
   }
   componentDidMount() {
     if (this.loadingStatus === LOADING_STATUS.SUCCESS) {
@@ -83,8 +78,8 @@ class AuthLanding extends Component {
           let isMatched = false;
           let matchedData;
           setCurrentLocation(location);
-          console.log(that.props, 'that.props', that.getProjects);
-          const { cities } = that.props;
+          console.log(that.props, 'that.props');
+          const { cities } = that.props.choosingProject;
           cities && cities.forEach((v) => {
             if (v.name === currentCity) {
               isMatched = true;
@@ -121,7 +116,10 @@ class AuthLanding extends Component {
   componentDidHide() { }
 
   getProjects() {
-    if (!this.currentLocation) {
+    const that = this;
+    const { currentLocation, currentCity } = this.props.choosingProject;
+    console.log(this.props, this.props.choosingProject, 'choosingProject;')
+    if (!currentLocation) {
       AUTH_TOAST();
       return;
     }
@@ -132,12 +130,12 @@ class AuthLanding extends Component {
     })
     wx.getLocation({
       success(res) {
-        this.props.getProjectByLocation({
-          longitude: this.currentLocation.lng,
-          latitude: this.currentLocation.lat,
+        that.props.getProjectByLocation({
+          longitude: currentLocation.lng,
+          latitude: currentLocation.lat,
           page: 200,
           per_page: 1,
-          ...this.currentCity
+          ...currentCity
         }, (res) => {
           wx.hideToast()
         }, (err) => {
@@ -175,11 +173,54 @@ class AuthLanding extends Component {
     });
   }
 
+  onCityChoosing() {
+    this.setState({
+      isPopupShow: true,
+    });
+  }
+
+  onCityClick(i) {
+    const {
+      changeCurrentCity,
+      onCityChoosing,
+      choosingProject: { cities },
+    } = this.props;
+    changeCurrentCity(cities[i]);
+    wx.setStorageSync(HOUSE_DATA, {
+      ...wx.getStorageSync(HOUSE_DATA),
+      city: cities[i],
+    });
+    this.setState({
+      isPopupShow: false,
+    });
+    onCityChoosing();
+    this.getProjects();
+  }
+
+  onProjectClick(i) {
+    const { projects } = this.props.choosingProject;
+    wx.setStorageSync(HOUSE_DATA, {
+      ...wx.getStorageSync(HOUSE_DATA),
+      project: projects[i],
+    });
+    wx.navigateTo({
+      url: '/pages/ChoosingBuilding/index',
+    });
+  }
+
   render() {
     const {
       isPopupShow,
       searchValue,
     } = this.state;
+    const {
+      cities,
+      projects,
+      currentCity,
+      currentLocation,
+      loadingStatus,
+    } = this.props.choosingProject;
+
     return (
       <View class="choosing-project">
         <NavigationBar
@@ -191,8 +232,8 @@ class AuthLanding extends Component {
         </View>
         <GreySpace title="当前城市" />
         <View class="city">
-          <View class="city-name" onTap="onCityChoosing">
-            <View>abc</View>
+          <View class="city-name" onClick={this.onCityChoosing}>
+            <View>{currentCity.name}</View>
             <Image src={IMG_TRANGLE} />
           </View>
           <View class="location-status">
@@ -203,7 +244,7 @@ class AuthLanding extends Component {
           </View>
         </View>
         <GreySpace title="全部社区" />
-        <CustomButton
+        {/* <CustomButton
           onClick={this.onClick}
           styles={{ width: '200rpx', height: '200rpx' }}
           iconPos="right"
@@ -218,27 +259,19 @@ class AuthLanding extends Component {
         
           value={searchValue}
           onInput={this.onSearchBarInput}
-        />
+        /> */}
+        {
+          projects && projects.length ? projects.map((v, i) => <ListBar name={v.name} onClick={this.onProjectClick.bind(this, i)} />) : ''
+        }
         <PopupPage
           isPopupShow={isPopupShow}
+          title="城市"
           onTogglePopupShow={this.togglePopupShow}
         >
-          <View>1111</View>
+          {
+            cities && cities.length ? cities.map((v, i) => <ListBar name={v.name} onClick={this.onCityClick.bind(this, i)} />) : ''
+          }
         </PopupPage>
-        {/* <grey-space2
-          title="全部社区"
-        ></grey-space2>
-        <bar-list-project
-          :listData.sync="projects"
-        ></bar-list-project>
-        <popup-page
-          title="城市"
-        >
-          <bar-list-city
-            :listData.sync="cities"
-          ></bar-list-city>
-        </popup-page>
-      </View> */}
       </View>
     );
   }

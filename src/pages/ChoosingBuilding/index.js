@@ -8,6 +8,7 @@ import HeaderTitle from '../../components/HeaderTitle';
 import ListBar from '../../components/ListBar';
 import combineActions from '../../middlewares/combineActions';
 import * as choosingBuildingActions from '../../actions/choosingBuilding';
+import { HOUSE_DATA } from '../../constants/localStorage';
 
 import './index.scss';
 
@@ -58,6 +59,17 @@ class ChoosingBuilding extends Component {
   config = {
   }
 
+  onBuildingClick(i) {
+    const { buildings } = this.props.choosingBuilding;
+    wx.setStorageSync(HOUSE_DATA, {
+      ...wx.getStorageSync(HOUSE_DATA),
+      building: buildings[i],
+    });
+    wx.navigateTo({
+      url: '/pages/ChoosingHouse/index',
+    });
+  }
+
   render() {
     const {
       projectMsg,
@@ -72,13 +84,9 @@ class ChoosingBuilding extends Component {
           <HeaderTitle title="选择代缴房屋" subTitle={projectMsg} />
           {
             buildings && buildings.length ? (
-              buildings.map((v) => {
-                console.log(v, 'v')
-                return <ListBar name={v.name} />
-              })
+              buildings.map((v, i) => <ListBar name={v.name} onClick={this.onBuildingClick.bind(this, i)} />)
             ) : ''
           }
-          <ListBar name='111' />
         </View>
       </View>
     );

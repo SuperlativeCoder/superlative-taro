@@ -7,14 +7,14 @@ import './index.scss';
 
 const propTypes = {
   name: PropTypes.string,
-  onListBarTap: PropTypes.func,
+  onClick: PropTypes.func,
   isRightArrowShow: PropTypes.bool,
   children: PropTypes.func,
 };
 
 const defaultProps = {
   name: '',
-  onListBarTap: () => {},
+  onClick: () => {},
   isRightArrowShow: true,
   children: () => {},
 };
@@ -23,12 +23,12 @@ class ListBar extends Component {
   render() {
     const {
       name,
-      onListBarTap,
+      onClick,
       isRightArrowShow,
     } = this.props;
 
     return (
-      <View class="list-bar-wrapper" onClick={onListBarTap}>
+      <View class="list-bar-wrapper" onClick={onClick}>
         <View class="list-bar">
           <View class="content">
             <View class="text">{name}</View>
