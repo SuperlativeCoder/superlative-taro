@@ -1,0 +1,40 @@
+@import '../../public/styles/index.scss';
+
+.search-project {
+  height: 100%;
+  .search-bar-out-wrapper {
+    @include flex-between;
+    height: 136rpx;
+    box-sizing: border-box;
+    padding: 20rpx 0;
+    position: relative;
+
+    .cancel {
+      flex: 0 0 96rpx;
+      font-size: 28rpx;
+      // text-align: center;
+    }
+
+    .delete {
+      position: absolute;
+      top: 50rpx;
+      right: 140rpx;
+      image {
+        width: 40rpx;
+        height: 40rpx;
+      }
+    }
+  }
+
+  .search-content {
+    // height: 800rpx;
+    .loading {
+      @include flex-center;
+      height: 800rpx;
+      image {
+        width: 60rpx;
+        height: 60rpx;
+      }
+    }
+  }
+}

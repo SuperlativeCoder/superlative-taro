@@ -29,6 +29,7 @@ class App extends Component {
       'pages/ChoosingBuilding/index',
       'pages/ChoosingProject/index',
       'pages/SelectHouse/index',
+      'pages/SearchProject/index',
       'pages/index/index',
     ],
     window: {
