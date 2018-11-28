@@ -1,8 +1,8 @@
 import Taro, { Component } from '@tarojs/taro';
-import { View, Text } from '@tarojs/components';
+import { View } from '@tarojs/components';
 import { connect } from '@tarojs/redux';
+import PropTypes from 'prop-types';
 
-// import { add, minus, asyncAdd } from '../../actions/counter';
 import NavigationBar from '../../components/NavigationBar';
 import HeaderTitle from '../../components/HeaderTitle';
 import ListBar from '../../components/ListBar';
@@ -12,6 +12,12 @@ import { HOUSE_DATA } from '../../constants/localStorage';
 
 import './index.scss';
 
+const propTypes = {
+  getBuildingByProject: PropTypes.func.isRequired,
+  choosingBuilding: PropTypes.shape({
+    buildings: PropTypes.array.isRequired,
+  }).isRequired,
+};
 
 @connect(({ choosingBuilding }) => ({
   choosingBuilding,
@@ -28,35 +34,16 @@ class ChoosingBuilding extends Component {
   }
 
   componentDidMount() {
-    // const houseData = wx.getStorageSync(HOUSE_DATA)
-    // const { city, project, building } = houseData;
-    // if (project && building) {
-    //   wx.showLoading();
-    //   this.projectMsg = building.name
-    //   this.methods.getHouseByBuilding(building.code, (res) => {
-    //     wx.hideLoading();
-    //   }, (err) => {
-    //     wx.hideLoading();
-    //   })
-    // }
-    this.props.getBuildingByProject(44010008, (res) => {
-      console.log(res, 'res')
+    const { project } = wx.getStorageSync(HOUSE_DATA);
+    this.props.getBuildingByProject(project.code, () => {
       wx.hideLoading();
     }, (err) => {
+      wx.showToast({
+        title: err.message || '获取房屋信息失败',
+        icon: 'none',
+      });
       wx.hideLoading();
-    })
-  }
-
-  componentWillReceiveProps(nextProps) {
-  }
-
-  componentWillUnmount() { }
-
-  componentDidShow() { }
-
-  componentDidHide() { }
-
-  config = {
+    });
   }
 
   onBuildingClick(i) {
@@ -92,5 +79,7 @@ class ChoosingBuilding extends Component {
     );
   }
 }
+
+ChoosingBuilding.propTypes = propTypes;
 
 export default ChoosingBuilding;

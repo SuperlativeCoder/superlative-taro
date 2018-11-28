@@ -1,6 +1,7 @@
 import Taro, { Component } from '@tarojs/taro';
-import { View, Text, Button, Image } from '@tarojs/components';
+import { View, Button, Image } from '@tarojs/components';
 import { connect } from '@tarojs/redux';
+import PropTypes from 'prop-types';
 
 import combineActions from '../../middlewares/combineActions';
 import * as authLandingActions from '../../actions/authLanding';
@@ -10,9 +11,12 @@ import IMG_INTRO from '../../public/images/miniapp_bill_intro.svg';
 
 import './index.scss';
 
+const propTypes = {
+  getBindingHouses: PropTypes.func.isRequired,
+};
 
-@connect(({ counter }) => ({
-  counter,
+@connect(({ authLanding }) => ({
+  authLanding,
 }), combineActions({
   ...authLandingActions,
   ...selectHouseActions,
@@ -21,38 +25,39 @@ class AuthLanding extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      
-    }
+    this.state = {};
 
     this.onGetUserInfo = this.onGetUserInfo.bind(this);
   }
   componentDidMount() {
     const that = this;
+    wx.showLoading();
     wx.login({
       success(res) {
         if (res.code) {
           that.props.getUserDataByCode(res.code, (resSuccess) => {
             if (resSuccess.ticket) {
-              wx.setStorageSync('token', resSuccess)
+              wx.setStorageSync('token', resSuccess);
+            } else {
+              wx.showToast({
+                title: 'param err',
+                icon: 'none',
+              });
             }
+            wx.hideLoading();
+          }, (err) => {
+            wx.showToast({
+              title: err.message || '登陆失败',
+              icon: 'none',
+            });
+            wx.hideLoading();
           });
         }
-      }
-    })
+      },
+    });
   }
-
-  componentWillReceiveProps(nextProps) {
-  }
-
-  componentWillUnmount() { }
-
-  componentDidShow() { }
-
-  componentDidHide() { }
 
   onGetUserInfo(res) {
-    console.log(arguments, 'arguments', this.props);
     if (res.detail && res.detail.userInfo) {
       this.props.getBindingHouses((resp) => {
         if (resp.houses && resp.houses.length) {
@@ -97,5 +102,7 @@ class AuthLanding extends Component {
     );
   }
 }
+
+AuthLanding.propTypes = propTypes;
 
 export default AuthLanding;

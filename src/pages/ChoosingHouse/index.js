@@ -1,8 +1,8 @@
 import Taro, { Component } from '@tarojs/taro';
-import { View, Text } from '@tarojs/components';
+import { View } from '@tarojs/components';
 import { connect } from '@tarojs/redux';
+import PropTypes from 'prop-types';
 
-// import { add, minus, asyncAdd } from '../../actions/counter';
 import NavigationBar from '../../components/NavigationBar';
 import HeaderTitle from '../../components/HeaderTitle';
 import ListBar from '../../components/ListBar';
@@ -12,6 +12,13 @@ import { HOUSE_DATA } from '../../constants/localStorage';
 
 import './index.scss';
 
+const propTypes = {
+  bindingHouseByHouseCode: PropTypes.func.isRequired,
+  getHouseByBuilding: PropTypes.func.isRequired,
+  choosingHouse: PropTypes.shape({
+    houses: PropTypes.object,
+  }).isRequired,
+};
 
 @connect(({ choosingHouse }) => ({
   choosingHouse,
@@ -28,63 +35,43 @@ class ChoosingHouse extends Component {
   }
 
   componentDidMount() {
-    // const houseData = wx.getStorageSync(HOUSE_DATA)
-    // const { city, project, building } = houseData;
-    // if (project && building) {
-    //   wx.showLoading();
-    //   this.projectMsg = building.name
-    //   this.methods.getHouseByBuilding(building.code, (res) => {
-    //     wx.hideLoading();
-    //   }, (err) => {
-    //     wx.hideLoading();
-    //   })
-    // }
-    const { building } = wx.getStorageSync(HOUSE_DATA)
+    const { building } = wx.getStorageSync(HOUSE_DATA);
     if (building) {
-      this.props.getHouseByBuilding(building.code, (res) => {
-        console.log(res, 'res')
+      this.props.getHouseByBuilding(building.code, () => {
         wx.hideLoading();
       }, (err) => {
+        wx.showToast({
+          title: err.message || '获取房屋信息失败',
+          icon: 'none',
+        });
         wx.hideLoading();
-      })
+      });
     }
-  }
-
-  componentWillReceiveProps(nextProps) {
-  }
-
-  componentWillUnmount() { }
-
-  componentDidShow() { }
-
-  componentDidHide() { }
-
-  config = {
   }
 
   onHouseClick(i) {
     const {
       houses,
     } = this.props.choosingHouse;
-    this.props.bindingHouseByHouseCode(houses[i].code, (res) => {
+    this.props.bindingHouseByHouseCode(houses[i].code, () => {
       wx.setStorageSync(HOUSE_DATA, {
         ...wx.getStorageSync(HOUSE_DATA),
-        house: houses[i]
-      })
+        house: houses[i],
+      });
       wx.navigateTo({
-        url: '/pages/ConfirmBill/index'
-      })
+        url: '/pages/ConfirmBill/index',
+      });
     }, (err) => {
       if (err && err.code === 400) {
         wx.setStorageSync(HOUSE_DATA, {
           ...wx.getStorageSync(HOUSE_DATA),
-          house: houses[i]
-        })
+          house: houses[i],
+        });
         wx.navigateTo({
-          url: '/pages/ValidateHouse/index'
-        })
+          url: '/pages/ValidateHouse/index',
+        });
       }
-    })
+    });
   }
 
   render() {
@@ -108,5 +95,7 @@ class ChoosingHouse extends Component {
     );
   }
 }
+
+ChoosingHouse.propTypes = propTypes;
 
 export default ChoosingHouse;

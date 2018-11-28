@@ -1,15 +1,13 @@
 import Taro, { Component } from '@tarojs/taro';
 import { View, Image } from '@tarojs/components';
 import { connect } from '@tarojs/redux';
+import PropTypes from 'prop-types';
 
 import combineActions from '../../middlewares/combineActions';
 import * as choosingProjectActions from '../../actions/choosingProject';
 import NavigationBar from '../../components/NavigationBar';
 import HeaderTitle from '../../components/HeaderTitle';
 import GreySpace from '../../components/GreySpace';
-import CustomButton from '../../components/CustomButton';
-import EmptyPage from '../../components/EmptyPage';
-import InputItem from '../../components/InputItem';
 import PopupPage from '../../components/PopupPage';
 import SearchBar from '../../components/SearchBar';
 import ListBar from '../../components/ListBar';
@@ -30,6 +28,19 @@ const AUTH_TOAST = () => {
   });
 };
 
+const propTypes = {
+  getAllCities: PropTypes.func.isRequired,
+  changeCurrentCity: PropTypes.func.isRequired,
+  setCurrentLocation: PropTypes.func.isRequired,
+  onCityChoosing: PropTypes.func.isRequired,
+  choosingProject: PropTypes.shape({
+    currentCity: PropTypes.object,
+    currentLocation: PropTypes.object,
+    projects: PropTypes.object,
+    cities: PropTypes.object,
+  }).isRequired,
+};
+
 @connect(({
   choosingProject,
 }) => ({
@@ -37,14 +48,12 @@ const AUTH_TOAST = () => {
 }), combineActions({
   ...choosingProjectActions,
 }))
-class AuthLanding extends Component {
+class ChoosingProject extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      inputValue: '',
       isPopupShow: false,
-      searchValue: '123',
     };
 
     this.togglePopupShow = this.togglePopupShow.bind(this);
@@ -56,7 +65,6 @@ class AuthLanding extends Component {
       return;
     }
     const that = this;
-    console.log(this.props, 'this.props');
     const {
       getAllCities,
       changeCurrentCity,
@@ -78,14 +86,15 @@ class AuthLanding extends Component {
           let isMatched = false;
           let matchedData;
           setCurrentLocation(location);
-          console.log(that.props, 'that.props');
           const { cities } = that.props.choosingProject;
-          cities && cities.forEach((v) => {
-            if (v.name === currentCity) {
-              isMatched = true;
-              matchedData = v;
-            }
-          })
+          if (cities && cities.length) {
+            cities.forEach((v) => {
+              if (v.name === currentCity) {
+                isMatched = true;
+                matchedData = v;
+              }
+            });
+          }
           if (isMatched) {
             changeCurrentCity(matchedData);
           } else {
@@ -102,80 +111,22 @@ class AuthLanding extends Component {
         },
       });
     }, (err) => {
-
-    });
-  }
-
-  componentWillReceiveProps(nextProps) {
-  }
-
-  componentWillUnmount() { }
-
-  componentDidShow() {}
-
-  componentDidHide() { }
-
-  getProjects() {
-    const that = this;
-    const { currentLocation, currentCity } = this.props.choosingProject;
-    console.log(this.props, this.props.choosingProject, 'choosingProject;')
-    if (!currentLocation) {
-      AUTH_TOAST();
-      return;
-    }
-    wx.showToast({
-      title: '加载中...',
-      icon: 'loading',
-      duration: 15000,
-    })
-    wx.getLocation({
-      success(res) {
-        that.props.getProjectByLocation({
-          longitude: currentLocation.lng,
-          latitude: currentLocation.lat,
-          page: 200,
-          per_page: 1,
-          ...currentCity
-        }, (res) => {
-          wx.hideToast()
-        }, (err) => {
-          wx.showToast({
-            title: err.message || '请求数据失败',
-          })
-        })
-      },
-      fail(err) {
-      }
-    });
-  }
-
-  onClick() {
-    console.log(111)
-  }
-
-  onInput(e) {
-    console.log(e.detail.value, 'e');
-  }
-
-  onSearchBarInput(e) {
-    console.log(e.detail.value, 'e.detail.value')
-  }
-
-  togglePopupShow() {
-    this.setState({
-      isPopupShow: !this.state.isPopupShow,
-    });
-  }
-
-  onSearchBarTap() {
-    wx.navigateTo({
-      url: '/pages/SearchProject/index',
+      wx.showToast({
+        title: err.message || '获取城市信息错误',
+        icon: 'none',
+      });
     });
   }
 
   onCityChoosing() {
     this.setState({
       isPopupShow: true,
+    });
+  }
+
+  onSearchBarTap() {
+    wx.navigateTo({
+      url: '/pages/SearchProject/index',
     });
   }
 
@@ -208,17 +159,58 @@ class AuthLanding extends Component {
     });
   }
 
+  getProjects() {
+    const that = this;
+    const { currentLocation, currentCity } = this.props.choosingProject;
+    if (!currentLocation) {
+      AUTH_TOAST();
+      return;
+    }
+    wx.showToast({
+      title: '加载中...',
+      icon: 'loading',
+      duration: 15000,
+    });
+    wx.getLocation({
+      success() {
+        that.props.getProjectByLocation({
+          longitude: currentLocation.lng,
+          latitude: currentLocation.lat,
+          page: 200,
+          per_page: 1,
+          ...currentCity,
+        }, () => {
+          wx.hideToast();
+        }, (err) => {
+          wx.showToast({
+            title: err.message || '请求项目数据失败',
+            icon: 'none',
+          });
+        });
+      },
+      fail(err) {
+        wx.showToast({
+          title: err.message || '定位失败',
+          icon: 'none',
+        });
+      },
+    });
+  }
+
+  togglePopupShow() {
+    this.setState({
+      isPopupShow: !this.state.isPopupShow,
+    });
+  }
+
   render() {
     const {
       isPopupShow,
-      searchValue,
     } = this.state;
     const {
       cities,
       projects,
       currentCity,
-      currentLocation,
-      loadingStatus,
     } = this.props.choosingProject;
 
     return (
@@ -244,22 +236,6 @@ class AuthLanding extends Component {
           </View>
         </View>
         <GreySpace title="全部社区" />
-        {/* <CustomButton
-          onClick={this.onClick}
-          styles={{ width: '200rpx', height: '200rpx' }}
-          iconPos="right"
-          iconSrc={IMG_TRANGLE}
-        />
-        <EmptyPage title="123" />
-        <InputItem
-          onInput={this.onInput}
-          title="123"
-        />
-        <SearchBar
-        
-          value={searchValue}
-          onInput={this.onSearchBarInput}
-        /> */}
         {
           projects && projects.length ? projects.map((v, i) => <ListBar name={v.name} onClick={this.onProjectClick.bind(this, i)} />) : ''
         }
@@ -277,4 +253,6 @@ class AuthLanding extends Component {
   }
 }
 
-export default AuthLanding;
+ChoosingProject.propTypes = propTypes;
+
+export default ChoosingProject;

@@ -1,6 +1,7 @@
 import Taro, { Component } from '@tarojs/taro';
-import { View, Text, Button, Image } from '@tarojs/components';
+import { View } from '@tarojs/components';
 import { connect } from '@tarojs/redux';
+import PropTypes from 'prop-types';
 
 import combineActions from '../../middlewares/combineActions';
 import * as authLandingActions from '../../actions/authLanding';
@@ -14,6 +15,12 @@ import { HOUSE_DATA } from '../../constants/localStorage';
 import HouseBar from './Components/HouseBar';
 import './index.scss';
 
+const propTypes = {
+  getBindingHouses: PropTypes.func.isRequired,
+  selectHouse: PropTypes.shape({
+    houses: PropTypes.object,
+  }).isRequired,
+};
 
 @connect(({ selectHouse }) => ({
   selectHouse,
@@ -21,55 +28,46 @@ import './index.scss';
   ...authLandingActions,
   ...selectHouseActions,
 }))
-class AuthLanding extends Component {
+class SelectHouse extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      
-    }
+    this.state = {};
 
     this.onAddHouseTap = this.onAddHouseTap.bind(this);
   }
   componentDidMount() {
     if (this.loadingStatus !== LOADING_STATUS.SUCCESS) {
       wx.showLoading();
-      this.props.getBindingHouses((res) => {
+      this.props.getBindingHouses(() => {
         wx.hideLoading();
       }, (err) => {
         wx.hideLoading();
         wx.showToast({
-          title: err.message || '房屋获取失败'
-        })
-      })
+          title: err.message || '房屋获取失败',
+          icon: 'none',
+        });
+      });
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-  }
-
-  componentWillUnmount() { }
-
-  componentDidShow() { }
-
-  componentDidHide() { }
-
   onAddHouseTap() {
     wx.navigateTo({
-      url: '/pages/ChoosingProject/index'
-    })
+      url: '/pages/ChoosingProject/index',
+    });
   }
 
   onHouseTap(i) {
     const houseData = wx.getStorageSync(HOUSE_DATA);
+    const { houses } = this.props.selectHouse;
     if (houseData) {
       wx.setStorageSync(HOUSE_DATA, {
         ...wx.getStorageSync(HOUSE_DATA),
-        house: this.props.selectHouse.houses[i],
+        house: houses[i],
       });
     } else {
       wx.setStorageSync(HOUSE_DATA, {
-        house: this.props.selectHouse.houses[i],
+        house: houses[i],
       });
     }
     wx.navigateTo({
@@ -80,7 +78,6 @@ class AuthLanding extends Component {
   render() {
     const {
       houses,
-      loadingStatus,
     } = this.props.selectHouse;
     console.log(houses, 'houses');
     return (
@@ -110,4 +107,6 @@ class AuthLanding extends Component {
   }
 }
 
-export default AuthLanding;
+SelectHouse.propTypes = propTypes;
+
+export default SelectHouse;
