@@ -32,12 +32,11 @@ const propTypes = {
   getAllCities: PropTypes.func.isRequired,
   changeCurrentCity: PropTypes.func.isRequired,
   setCurrentLocation: PropTypes.func.isRequired,
-  onCityChoosing: PropTypes.func.isRequired,
   choosingProject: PropTypes.shape({
     currentCity: PropTypes.object,
     currentLocation: PropTypes.object,
-    projects: PropTypes.object,
-    cities: PropTypes.object,
+    projects: PropTypes.array,
+    cities: PropTypes.array,
   }).isRequired,
 };
 
@@ -70,7 +69,11 @@ class ChoosingProject extends Component {
       changeCurrentCity,
       setCurrentLocation,
     } = this.props;
-
+    wx.showToast({
+      title: '加载中...',
+      icon: 'loading',
+      duration: 15000,
+    });
     getAllCities(() => {
       const bmap = new BMap.BMapWX({
         ak: '6mKSk4bz4k9RBCMGRUyjil3GGUqXOXy8',
@@ -80,6 +83,7 @@ class ChoosingProject extends Component {
           AUTH_TOAST();
         },
         success(res) {
+          wx.hideToast();
           const { result } = res.originalData;
           const currentCity = result.addressComponent.city;
           const { location } = result;
@@ -133,7 +137,6 @@ class ChoosingProject extends Component {
   onCityClick(i) {
     const {
       changeCurrentCity,
-      onCityChoosing,
       choosingProject: { cities },
     } = this.props;
     changeCurrentCity(cities[i]);
@@ -144,7 +147,7 @@ class ChoosingProject extends Component {
     this.setState({
       isPopupShow: false,
     });
-    onCityChoosing();
+    this.onCityChoosing();
     this.getProjects();
   }
 
@@ -215,9 +218,7 @@ class ChoosingProject extends Component {
 
     return (
       <View class="choosing-project">
-        <NavigationBar
-          title="123"
-        />
+        <NavigationBar />
         <HeaderTitle title="选择代缴房屋" />
         <View class="search-bar-wrapper" onClick={this.onSearchBarTap}>
           <SearchBar disable placeholder="搜索社区名称" />
@@ -237,7 +238,7 @@ class ChoosingProject extends Component {
         </View>
         <GreySpace title="全部社区" />
         {
-          projects && projects.length ? projects.map((v, i) => <ListBar name={v.name} onClick={this.onProjectClick.bind(this, i)} />) : ''
+          projects && projects.length ? projects.map((v, i) => <ListBar key={i} name={v.name} onClick={this.onProjectClick.bind(this, i)} />) : ''
         }
         <PopupPage
           isPopupShow={isPopupShow}
@@ -245,7 +246,7 @@ class ChoosingProject extends Component {
           onTogglePopupShow={this.togglePopupShow}
         >
           {
-            cities && cities.length ? cities.map((v, i) => <ListBar name={v.name} onClick={this.onCityClick.bind(this, i)} />) : ''
+            cities && cities.length ? cities.map((v, i) => <ListBar key={i} name={v.name} onClick={this.onCityClick.bind(this, i)} />) : ''
           }
         </PopupPage>
       </View>
